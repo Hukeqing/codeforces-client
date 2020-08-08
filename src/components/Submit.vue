@@ -46,7 +46,6 @@ export default {
     },
 
     props: {
-        xCsrfToken: String,
         user: String,
     },
 
@@ -63,10 +62,8 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             })
-            // eslint-disable-next-line no-unused-vars
-            common.startSession((e, x, u) => {
-                this.xCsrfToken = x
-                submit.submitCode(this.xCsrfToken, this.contest, this.problem, this.code, e => {
+            common.getXCsrfToken((e, x) => {
+                submit.submitCode(x, this.contest, this.problem, this.code, e => {
                     if (e) {
                         this.$message.error('提交肯定出错了')
                     } else {

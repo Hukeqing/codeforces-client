@@ -40,7 +40,6 @@ export default {
     name: "Login",
 
     props: {
-        xCsrfToken: String,
         user: String,
         logout: String
     },
@@ -60,18 +59,21 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             })
-            common.getLoginCookie(this.cookie, this.xCsrfToken, this.email, this.password, (e, u) => {
-                loading.close()
-                if (e) {
-                    this.$message.error('登录出错，请重试')
-                } else {
-                    if (u[0] !== '/enter?back=%2F') {
-                        this.user = u[1]
-                        this.logout = u[2]
+
+            common.getXCsrfToken((e, x) => {
+                common.getLoginCookie(x, this.email, this.password, (e, u) => {
+                    loading.close()
+                    if (e) {
+                        this.$message.error('登录出错，请重试')
+                    } else {
+                        if (u[0] !== '/enter?back=%2F') {
+                            this.user = u[1]
+                            this.logout = u[2]
+                        }
+                        this.$message.success('登录成功')
+                        this.$emit('login', {user: this.user, logout: this.logout})
                     }
-                    this.$message.success('登录成功')
-                    this.$emit('login', {user: this.user, logout: this.logout})
-                }
+                })
             })
         },
 

@@ -12,8 +12,8 @@
                 </el-menu>
             </el-aside>
             <el-main>
-                <Login v-if="status===1"  :xCsrfToken="xCsrfToken" :user="user" :logout="logout" v-on:login="login"></Login>
-                <Submit v-if="status===2"  :xCsrfToken="xCsrfToken" :user="user"></Submit>
+                <Login v-if="status===1" :user="user" :logout="logout" v-on:login="login"></Login>
+                <Submit v-if="status===2" :user="user"></Submit>
             </el-main>
         </el-container>
     </el-container>
@@ -38,7 +38,6 @@ export default {
     },
 
     props: {
-        xCsrfToken: String,
         user: String,
         logout: String
     },

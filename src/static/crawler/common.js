@@ -3,7 +3,7 @@ let request = require('request')
 let cheerio = require('cheerio')
 
 module.exports = {
-    startSession: function (callback) {
+    getXCsrfToken: function (callback) {
         let opts = {
             url: basic.url,
             method: 'GET',
@@ -15,14 +15,7 @@ module.exports = {
             request(opts, (e, r, b) => {
                 try {
                     const $ = cheerio.load(b)
-                    const userCheerio = cheerio.load($('div[class="lang-chooser"]').html())
-                    let smallCheerio = cheerio.load(userCheerio(userCheerio('div')[1]).html())
-                    let user = smallCheerio('a')
-                    callback(false, $('meta[name="X-Csrf-Token"]').prop('content'),
-                        [smallCheerio(user[0]).attr('href'),
-                            smallCheerio(user[0]).text(),
-                            smallCheerio(user[1]).attr('href')]
-                    )
+                    callback(false, $('meta[name="X-Csrf-Token"]').prop('content'))
                 } catch (e) {
                     console.log('connection error')
                     callback(true, 0)
@@ -34,7 +27,7 @@ module.exports = {
         }
     },
 
-    getLoginCookie: function (cookie, xCsrfToken, email, password, callback) {
+    getLoginCookie: function (xCsrfToken, email, password, callback) {
         let data = {
             handleOrEmail: email,
             password: password,
