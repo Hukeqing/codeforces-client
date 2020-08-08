@@ -21,15 +21,23 @@
                 <el-table-column
                     prop="id"
                     label="ID"
-                    align="right"
+                    align="center"
                     min-width="50">
+                </el-table-column>
+                <el-table-column
+                    label="StartTime"
+                    align="center"
+                    min-width="100">
+                    <template slot-scope="scope">
+                        {{ getTime(submits[scope.$index].creationTimeSeconds) }}
+                    </template>
                 </el-table-column>
                 <el-table-column
                     label="problem"
                     align="center"
                     min-width="100">
-                    <template scope="scop">
-                        {{ getProblemName(scop.$index) }}
+                    <template scope="scope">
+                        {{ getProblemName(scope.$index) }}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -54,8 +62,8 @@
                     label="Member"
                     align="center"
                     min-width="35">
-                    <template scope="scop">
-                        {{ getMemory(scop.$index) }}
+                    <template scope="scope">
+                        {{ getMemory(scope.$index) }}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -70,6 +78,8 @@
 </template>
 
 <script>
+import {timeCycle} from '@/static/time'
+
 export default {
     name: "Status",
 
@@ -119,6 +129,10 @@ export default {
         getMemory(index) {
             let curSubmit = this.submits[index]
             return curSubmit.memoryConsumedBytes / 1024 + 'KB'
+        },
+
+        getTime(time) {
+            return timeCycle(time)
         },
 
         // eslint-disable-next-line no-unused-vars
