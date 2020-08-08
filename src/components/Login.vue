@@ -91,7 +91,7 @@ export default {
                 if (e) {
                     this.$message.error('退出登录出错，请重试')
                 } else {
-                    this.$message.success('退出登录成功，请重试')
+                    this.$message.success('退出登录成功')
                     this.user = ''
                     this.logout = ''
                     this.$emit('login', {user: this.user, logout: this.logout})

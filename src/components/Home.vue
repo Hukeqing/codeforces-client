@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-container>
-            <el-aside width="200px" style="background-color: rgb(224,224,224)">
+            <el-aside width="200px">
                 <el-menu :default-active="'0'" @select="changeSelect">
                     <el-menu-item index="1">
                         <span slot="title">登录</span>
@@ -13,6 +13,7 @@
             </el-aside>
             <el-main>
                 <Login v-if="status===1"  :xCsrfToken="xCsrfToken" :user="user" :logout="logout" v-on:login="login"></Login>
+                <Submit v-if="status===2"  :xCsrfToken="xCsrfToken" :user="user"></Submit>
             </el-main>
         </el-container>
     </el-container>
@@ -20,6 +21,7 @@
 
 <script>
 import Login from "@/components/Login";
+import Submit from "@/components/Submit";
 
 export default {
     name: "Home",
@@ -31,7 +33,8 @@ export default {
     },
 
     components: {
-        Login
+        Login,
+        Submit
     },
 
     props: {

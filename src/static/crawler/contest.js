@@ -3,13 +3,12 @@ let request = require('request')
 let cheerio = require('cheerio')
 
 module.exports = {
-    getContestProblem: function (cookie, contestId, callback) {
+    getContestProblem: function (contestId, callback) {
         let opts = {
             url: basic.url + 'contest/' + contestId,
             method: 'GET',
             headers: {
-                'User-Agent': basic.userAgent,
-                Cookie: cookie
+                'User-Agent': basic.userAgent
             }
         }
 

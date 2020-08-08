@@ -17,6 +17,7 @@ export default {
     name: 'App',
 
     created() {
+        // this.status = 1
         let loadScreen = this.openFullScreen()
         this.connectTimes = 1
         this.createSession(b => {
@@ -34,7 +35,7 @@ export default {
 
     data() {
         return {
-            status: 1,
+            status: 0,
             connectTimes: 1,
             xCsrfToken: '',
             userName: '',
