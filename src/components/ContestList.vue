@@ -69,6 +69,10 @@ import {timeCycle} from '@/static/time'
 export default {
     name: "ContestList",
 
+    created() {
+        this.fetchContestList()
+    },
+
     data() {
         return {
             onFetch: false,
@@ -119,7 +123,7 @@ export default {
 
         // eslint-disable-next-line no-unused-vars
         getColor({row, rowIndex}) {
-            switch (this.showContest[rowIndex].phase) {
+            switch (row.phase) {
                 case 'BEFORE':
                     return 'contestLine_before'
                 case 'CODING':

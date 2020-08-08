@@ -16,10 +16,7 @@ export default {
 
     data() {
         return {
-            status: 0,
-            connectTimes: 1,
-            userName: '',
-            logout: ''
+            status: 1,
         }
     },
 

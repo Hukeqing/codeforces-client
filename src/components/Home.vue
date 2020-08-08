@@ -9,11 +9,15 @@
                     <el-menu-item index="2">
                         <span slot="title">提交</span>
                     </el-menu-item>
+                    <el-menu-item index="3">
+                        <span slot="title">状态</span>
+                    </el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main>
                 <Login v-if="status===1" :user="user" :logout="logout" v-on:login="login"></Login>
                 <Submit v-if="status===2" :user="user"></Submit>
+                <Status v-if="status===3" :user="user"></Status>
             </el-main>
         </el-container>
     </el-container>
@@ -22,24 +26,23 @@
 <script>
 import Login from "@/components/Login";
 import Submit from "@/components/Submit";
+import Status from "@/components/Status";
 
 export default {
     name: "Home",
 
     data() {
         return {
-            status: 0
+            status: 0,
+            user: '',
+            logout: '',
         }
     },
 
     components: {
         Login,
-        Submit
-    },
-
-    props: {
-        user: String,
-        logout: String
+        Submit,
+        Status
     },
 
     methods: {

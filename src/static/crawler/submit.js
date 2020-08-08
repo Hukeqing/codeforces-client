@@ -2,7 +2,7 @@ let basic = require('./basic')
 let request = require('request')
 
 module.exports = {
-    submitCode: function (xCsrfToken, contest, problem, code, callback) {
+    submitCode: function (xCsrfToken, contest, problem, code, lang, callback) {
         let data = {
             csrf_token: xCsrfToken,
             ftaa: '',
@@ -10,7 +10,7 @@ module.exports = {
             action: 'submitSolutionFormSubmitted',
             contestId: contest,
             submittedProblemIndex: problem,
-            programTypeId: 50,
+            programTypeId: lang,
             source : code,
             tabSize : 4,
             sourceFile: ''
