@@ -39,6 +39,15 @@ let common = require('../static/crawler/common')
 export default {
     name: "Login",
 
+    created() {
+        if (this.user === '') {
+            if (window.localStorage.email)
+                this.email = window.localStorage.email;
+            if (window.localStorage.password)
+                this.password = window.localStorage.password;
+        }
+    },
+
     props: {
         user: String,
         logout: String
@@ -69,7 +78,11 @@ export default {
                         if (u[0] !== '/enter?back=%2F') {
                             this.user = u[1]
                             this.logout = u[2]
+                        } else {
+                            this.$message.error('登录出错，请重试')
                         }
+                        window.localStorage.email = this.email
+                        window.localStorage.password = this.password
                         this.$message.success('登录成功')
                         this.$emit('login', {user: this.user, logout: this.logout})
                     }
