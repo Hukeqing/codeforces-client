@@ -49,7 +49,6 @@ module.exports = {
             method: 'POST',
             headers: {
                 'User-Agent': basic.userAgent,
-                // 删了一大堆东西
             },
             form: data
         }
@@ -58,15 +57,42 @@ module.exports = {
             // eslint-disable-next-line no-unused-vars
             request(opts, (e, r, b) => {
                 try {
-                    callback(e)
+                    const $ = cheerio.load(b)
+                    const userCheerio = cheerio.load($('div[class="lang-chooser"]').html())
+                    let smallCheerio = cheerio.load(userCheerio(userCheerio('div')[1]).html())
+                    let user = smallCheerio('a')
+                    callback(e,
+                        [smallCheerio(user[0]).attr('href'),
+                            smallCheerio(user[0]).text(),
+                            smallCheerio(user[1]).attr('href')]
+                    )
                 } catch (e) {
                     console.log('login error')
-                    callback(true)
+                    callback(true, 0)
                 }
             })
         } catch (e) {
             console.log('login error')
             callback(true, 0)
+        }
+    },
+
+    logout: function (logoutUrl, callback) {
+        let opts = {
+            url: basic.url + logoutUrl,
+            method: 'GET',
+            headers: {
+                'User-Agent': basic.userAgent,
+            },
+        }
+        try {
+            // eslint-disable-next-line no-unused-vars
+            request(opts, (e, r, b) => {
+                callback(false)
+            })
+        } catch (e) {
+            console.log('logout error')
+            callback(true)
         }
     }
 }
