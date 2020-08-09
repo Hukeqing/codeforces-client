@@ -40,18 +40,18 @@
                         {{ contestList[scope.$index + curPage * 20].phase.toLowerCase() }}
                     </template>
                 </el-table-column>
-<!--                <el-table-column-->
-<!--                    label=""-->
-<!--                    align="center"-->
-<!--                    min-width="50">-->
-<!--                    <template scope="scope">-->
-<!--                        <el-button type="primary"-->
-<!--                                   v-on:click="clickContest(scope.$index + curPage * 20)"-->
-<!--                                   :disabled="enterButton(scope.$index + curPage * 20)">-->
-<!--                            进入-->
-<!--                        </el-button>-->
-<!--                    </template>-->
-<!--                </el-table-column>-->
+                <el-table-column
+                    label=""
+                    align="center"
+                    min-width="50">
+                    <template scope="scope">
+                        <el-button type="primary"
+                                   v-on:click="clickContest(scope.$index + curPage * 20)"
+                                   :disabled="enterButton(scope.$index + curPage * 20)">
+                            进入
+                        </el-button>
+                    </template>
+                </el-table-column>
             </el-table>
             <el-button-group style="margin-top: 30px">
                 <el-button type="primary" icon="el-icon-arrow-left" :disabled="curPage === 0" v-on:click="prePage">上一页
@@ -158,6 +158,7 @@ export default {
 
         clickContest(index) {
             console.log(this.contestList[index].id)
+            this.$emit('enterContest', {id: this.contestList[index].id})
         }
     }
 }

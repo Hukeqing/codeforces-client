@@ -13,27 +13,31 @@ module.exports = {
         }
 
         request(opts, (e, r, b) => {
-            let $ = cheerio.load(b)
-            let problems = $('table[class=problems]').html().replace(/[\r\n]/g, '')
-            let problemList = problems.split('<tr').slice(2).map(str => '<tr' + str + '</tr>')
-            let res = []
-            for (let i = 0; i < problemList.length; ++i) {
-                let pro = {}
-                if (/accepted-problem/.test(problemList[i])) {
-                    pro['status'] = 1
-                } else if (/rejected-problem/.test(problemList[i])) {
-                    pro['status'] = 2
-                } else {
-                    pro['status'] = 0
+            try {
+                let $ = cheerio.load(b)
+                let problems = $('table[class=problems]').html().replace(/[\r\n]/g, '')
+                let problemList = problems.split('<tr').slice(2).map(str => '<tr' + str + '</tr>')
+                let res = []
+                for (let i = 0; i < problemList.length; ++i) {
+                    let pro = {}
+                    if (/accepted-problem/.test(problemList[i])) {
+                        pro['status'] = 1
+                    } else if (/rejected-problem/.test(problemList[i])) {
+                        pro['status'] = 2
+                    } else {
+                        pro['status'] = 0
+                    }
+                    let $ = cheerio.load(problemList[i])
+                    let tmp = $('a').map((i, el) => $(el).text().replace(/(^\s*)|(\s*$)/g, ""))
+                    pro['id'] = tmp['0']
+                    pro['name'] = tmp['1']
+                    pro['passed'] = tmp['3'].slice(1)
+                    res.push(pro)
                 }
-                let $ = cheerio.load(problemList[i])
-                let tmp = $('a').map((i, el) => $(el).text().replace(/(^\s*)|(\s*$)/g, ""))
-                pro['id'] = tmp['0']
-                pro['name'] = tmp['1']
-                pro['passed'] = tmp['3'].slice(1)
-                res.push(pro)
+                callback(false, res)
+            } catch (e) {
+                callback(true, e)
             }
-            callback(res)
         })
     }
 }

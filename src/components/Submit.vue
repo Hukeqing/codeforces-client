@@ -2,13 +2,13 @@
     <div class="main">
         <el-input style="margin-bottom: 15px; width: 200px;"
                   placeholder="比赛编号（例如：1393）"
-                  v-model="contest"
+                  v-model="myCid"
                   clearable>
         </el-input>
 
         <el-input style="margin-bottom: 15px; margin-left: 30px; width: 100px;"
                   placeholder="ID（A）"
-                  v-model="problem"
+                  v-model="myPid"
                   clearable>
         </el-input>
 
@@ -46,6 +46,11 @@ let common = require('../static/crawler/common')
 
 export default {
     name: "Submit",
+
+    created() {
+        this.myCid = this.contestId
+        this.myPid = this.problemId
+    },
 
     data() {
         return {
@@ -98,22 +103,19 @@ export default {
                 {name: 'Text', value: 57},
                 {name: 'UnknownX', value: 62}],
             code: '',
-            contest: '',
-            problem: '',
-            languageSelect: 50
+            languageSelect: 50,
+            myCid: '',
+            myPid: ''
         }
     },
 
     props: {
         user: String,
+        contestId: String,
+        problemId: String,
     },
 
     methods: {
-        setProblem(contest, problem) {
-            this.contest = contest
-            this.problem = problem
-        },
-
         submitCode() {
             console.log(this.code)
             if (this.user === '') {
@@ -127,11 +129,12 @@ export default {
                 background: 'rgba(0, 0, 0, 0.7)'
             })
             common.getXCsrfToken((e, x) => {
-                submit.submitCode(x, this.contest, this.problem, this.code, this.languageSelect, e => {
+                submit.submitCode(x, this.myCid, this.myPid, this.code, this.languageSelect, e => {
                     if (e) {
                         this.$message.error('提交肯定出错了')
                     } else {
                         this.$message.success('提交大概是成功了')
+                        this.$emit('submitOver')
                     }
                     loading.close()
                 })

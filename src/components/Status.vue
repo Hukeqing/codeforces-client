@@ -1,5 +1,6 @@
 <template>
-    <div class="main">拉取提交列表长度：
+    <div class="main">
+        拉取提交列表长度：
         <el-input style="margin-bottom: 15px; width: 200px;"
                   placeholder="0"
                   v-model="count"
