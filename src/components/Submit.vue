@@ -99,8 +99,8 @@ export default {
                 {name: 'UnknownX', value: 62}],
             code: '',
             contest: '',
-            languageSelect: 50,
-            problem: ''
+            problem: '',
+            languageSelect: 50
         }
     },
 
@@ -109,6 +109,11 @@ export default {
     },
 
     methods: {
+        setProblem(contest, problem) {
+            this.contest = contest
+            this.problem = problem
+        },
+
         submitCode() {
             console.log(this.code)
             if (this.user === '') {

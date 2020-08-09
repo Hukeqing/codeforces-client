@@ -1,12 +1,7 @@
 <template>
     <div>
-        <transition name="fade">
-            <el-button type="primary" v-show="notFetch" :loading="onFetch" v-on:click="fetchContestList">Fetch
-            </el-button>
-        </transition>
-
         <template v-if="!notFetch">
-            <el-table :data="showContest"
+            <el-table :data="contestList.slice(curPage * 20, (curPage + 1) * 20)"
                       style="width: 100%"
                       :row-class-name="getColor">
                 <el-table-column
@@ -26,7 +21,7 @@
                     align="center"
                     min-width="200">
                     <template slot-scope="scope">
-                        {{ getTime(showContest[scope.$index].startTimeSeconds) }}
+                        {{ getTime(contestList[scope.$index + curPage * 20].startTimeSeconds) }}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -34,7 +29,7 @@
                     align="center"
                     min-width="100">
                     <template slot-scope="scope">
-                        {{ getLengthTime(showContest[scope.$index].durationSeconds) }}
+                        {{ getLengthTime(contestList[scope.$index + curPage * 20].durationSeconds) }}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -42,22 +37,29 @@
                     align="center"
                     min-width="100">
                     <template slot-scope="scope">
-                        {{ showContest[scope.$index].phase.toLowerCase() }}
+                        {{ contestList[scope.$index + curPage * 20].phase.toLowerCase() }}
                     </template>
                 </el-table-column>
-                <el-table-column
-                    label=""
-                    align="center"
-                    min-width="50">
-                    <template scope="scope">
-                        <el-button type="primary"
-                                   v-on:click="clickContest(scope.$index)"
-                                   :disabled="enterButton(scope.$index)">
-                            进入
-                        </el-button>
-                    </template>
-                </el-table-column>
+<!--                <el-table-column-->
+<!--                    label=""-->
+<!--                    align="center"-->
+<!--                    min-width="50">-->
+<!--                    <template scope="scope">-->
+<!--                        <el-button type="primary"-->
+<!--                                   v-on:click="clickContest(scope.$index + curPage * 20)"-->
+<!--                                   :disabled="enterButton(scope.$index + curPage * 20)">-->
+<!--                            进入-->
+<!--                        </el-button>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
             </el-table>
+            <el-button-group style="margin-top: 30px">
+                <el-button type="primary" icon="el-icon-arrow-left" :disabled="curPage === 0" v-on:click="prePage">上一页
+                </el-button>
+                <el-button type="primary" v-on:click="nextPage" :disabled="curPage >= contestList.length / 20 - 1">下一页<i
+                    class="el-icon-arrow-right el-icon--right"></i>
+                </el-button>
+            </el-button-group>
         </template>
 
     </div>
@@ -75,40 +77,45 @@ export default {
 
     data() {
         return {
-            onFetch: false,
             notFetch: true,
             curPage: 0,
-            showContest: [],
             contestList: []
         }
     },
 
     methods: {
         fetchContestList() {
-            this.onFetch = true;
+            let loading = this.$loading({
+                lock: true,
+                text: '正在拉取比赛列表',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            })
             fetch('https://codeforces.com/api/contest.list').then(response => response.json()).then(json => {
                 if (json.status === 'FAILED') {
                     this.$message.error('意料之外的错误')
                     this.onFetch = false
+                    loading.close()
                     return
                 }
                 this.contestList = json.result
                 this.curPage = 0
-                this.getPage()
                 this.notFetch = false
+                loading.close()
             }).catch(() => {
                 this.$message.error('网络出错')
                 this.onFetch = false
+                loading.close()
             })
         },
 
-        nextPage() {
-            this.curPage++
-            this.getPage()
+        prePage() {
+            this.curPage--
         },
 
-        getPage() {
-            this.showContest = this.contestList.slice(this.curPage * 20, this.curPage * 20 + 20)
+
+        nextPage() {
+            this.curPage++
         },
 
         getTime(time) {
@@ -138,7 +145,7 @@ export default {
         },
 
         enterButton(index) {
-            switch (this.showContest[index].phase) {
+            switch (this.contestList[index].phase) {
                 case 'BEFORE':
                     return true
                 case 'CODING':
@@ -150,8 +157,7 @@ export default {
         },
 
         clickContest(index) {
-            console.log(this.showContest[index].id)
-
+            console.log(this.contestList[index].id)
         }
     }
 }
