@@ -117,21 +117,29 @@ export default {
         saveProblem() {
             console.log(this.contestId + this.problemId)
             console.log(this.myCid + this.myPid)
-            if (window.localStorage.getItem(this.contestId + this.problemId) == null) {
-                let saved = window.localStorage.savedProblem
-                if (saved == null) saved = this.contestId + this.problemId
-                else saved += ';' + this.contestId + this.problemId
-                window.localStorage.savedProblem = saved
+            if (!this.useLocalStorage) {
+                if (window.localStorage.getItem(this.contestId + this.problemId) == null) {
+                    let saved = window.localStorage.savedProblem
+                    if (saved == null) saved = this.contestId + this.problemId + ';'
+                    else saved += this.contestId + this.problemId + ';'
+                    window.localStorage.savedProblem = saved
+                }
+                window.localStorage.setItem(this.contestId + this.problemId, this.problemData)
+                this.useLocalStorage = true
+            } else {
+                window.localStorage.removeItem(this.contestId + this.problemId)
+                window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.contestId + this.problemId + ';', '')
+                this.useLocalStorage = false
             }
-            window.localStorage.setItem(this.contestId + this.problemId, this.problemData)
-            this.useLocalStorage = true
         },
 
         reloadProblem() {
             window.localStorage.removeItem(this.contestId + this.problemId)
+            window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.contestId + this.problemId + ';', '')
             this.myCid = this.contestId
             this.myPid = this.problemId
             this.loadProblem()
+            this.useLocalStorage = false
         },
 
         loadProblem() {
