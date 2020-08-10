@@ -1,6 +1,8 @@
-# codeforces_client
+# Codeforces Client
 
 这是一个 codeforces 的本地客户端系统
+
+使用 vue 进行编译，后对编译后的文件使用 Electron 打包
 
 [下载地址](https://github.com/Hukeqing/codeforces-client/releases/tag/0.2.0)
 

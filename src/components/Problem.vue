@@ -105,6 +105,9 @@ export default {
             if (window.localStorage.getItem(this.myCid + this.myPid) != null) {
                 this.useLocalStorage = true
                 this.problemData = window.localStorage.getItem(this.myCid + this.myPid)
+                this.$nextTick(function () { //这里要注意，使用$nextTick等组件数据渲染完之后再调用MathJax渲染方法，要不然会获取不到数据
+                    this.commonsVariable.MathQueue("problemMainData");//传入组件id，让组件被MathJax渲染
+                })
             } else {
                 this.useLocalStorage = false
                 this.loadProblem()
@@ -139,6 +142,10 @@ export default {
                 background: 'rgba(0, 0, 0, 0.7)'
             })
             problem.getProblem(this.myCid, this.myPid, (e, d) => {
+                if (d === '') {
+                    e = true
+                    d = '题目序号越界'
+                }
                 if (e) {
                     this.$message.error(d)
                     loading.close()
