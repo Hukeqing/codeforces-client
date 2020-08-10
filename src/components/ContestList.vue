@@ -1,5 +1,21 @@
 <template>
-    <div>
+    <div class="main">
+        <template>
+            <el-backtop>
+                <div style="
+                        height: 100%;
+                        width: 100%;
+                        background-color: #64c8ff;
+                        box-shadow: 0 0 6px rgba(0,0,0, .12);
+                        text-align: center;
+                        line-height: 40px;
+                        color: #1989fa;
+                        border-radius: 30px;"
+                ><i class="el-icon-top"></i>
+                </div>
+            </el-backtop>
+        </template>
+
         <template v-if="!notFetch">
             <el-table :data="contestList.slice(curPage * 20, (curPage + 1) * 20)"
                       style="width: 100%"

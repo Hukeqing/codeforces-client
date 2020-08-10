@@ -1,19 +1,37 @@
 <template>
     <div class="main">
-        拉取的比赛ID：
-        <el-input style="margin-bottom: 15px; width: 200px;"
-                  placeholder="0"
-                  v-model="myCid"
-                  clearable>
-        </el-input>
+        <template>
+            <el-backtop>
+                <div style="
+                        height: 100%;
+                        width: 100%;
+                        background-color: #64c8ff;
+                        box-shadow: 0 0 6px rgba(0,0,0, .12);
+                        text-align: center;
+                        line-height: 40px;
+                        color: #1989fa;
+                        border-radius: 30px;"
+                ><i class="el-icon-top"></i>
+                </div>
+            </el-backtop>
+        </template>
+
+        <div style="text-align: left">
+            拉取的比赛ID：
+            <el-input style="margin-bottom: 15px; width: 200px;"
+                      placeholder="0"
+                      v-model="myCid"
+                      clearable>
+            </el-input>
 
 
-        <el-button type="primary"
-                   style="margin-bottom: 15px; margin-left: 30px; width: 80px;"
-                   round
-                   v-on:click="getContest">
-            拉取
-        </el-button>
+            <el-button type="primary"
+                       style="margin-bottom: 15px; margin-left: 30px; width: 80px;"
+                       round
+                       v-on:click="getContest">
+                拉取
+            </el-button>
+        </div>
 
         <template v-if="!notFetch">
             <el-table :data="problems"

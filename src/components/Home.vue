@@ -4,22 +4,40 @@
             <el-aside width="200px">
                 <el-menu :default-active="String(status)" @select="changeSelect">
                     <el-menu-item index="1">
-                        <span slot="title">登录</span>
+                        <span slot="title">
+                            <i class="el-icon-user"></i>
+                            登录
+                        </span>
                     </el-menu-item>
                     <el-menu-item index="2">
-                        <span slot="title">提交</span>
+                        <span slot="title">
+                            <i class="el-icon-upload2"></i>
+                            提交
+                        </span>
                     </el-menu-item>
                     <el-menu-item index="3">
-                        <span slot="title">状态</span>
+                        <span slot="title">
+                            <i class="el-icon-circle-check"></i>
+                            状态
+                        </span>
                     </el-menu-item>
                     <el-menu-item index="4">
-                        <span slot="title">比赛列表</span>
+                        <span slot="title">
+                            <i class="el-icon-s-grid"></i>
+                            比赛列表
+                        </span>
                     </el-menu-item>
                     <el-menu-item index="5">
-                        <span slot="title">比赛题目列表</span>
+                        <span slot="title">
+                            <i class="el-icon-menu"></i>
+                            比赛题目列表
+                        </span>
                     </el-menu-item>
                     <el-menu-item index="6">
-                        <span slot="title">比赛题目</span>
+                        <span slot="title">
+                            <i class="el-icon-document"></i>
+                            比赛题面
+                        </span>
                     </el-menu-item>
                 </el-menu>
             </el-aside>
@@ -31,7 +49,7 @@
                 <ContestList v-if="status===4" v-on:enterContest="enterContest"></ContestList>
                 <Contest v-if="status===5" :contestId="contestId" v-on:enterProblem="enterProblem"></Contest>
                 <Problem v-if="status===6" :contestId="contestId" :problemId="problemId"
-                         v-on:submitProblem="submitProblem"></Problem>
+                         v-on:submitProblem="submitProblem" v-on:loadProblem="loadProblem"></Problem>
             </el-main>
         </el-container>
     </el-container>
@@ -78,12 +96,15 @@ export default {
             this.status = 0
         },
 
-        submitOver() {
+        submitOver(problem) {
+            this.contestId = String(problem.contest)
+            this.problemId = problem.id
             this.status = 3
         },
 
         enterContest(contest) {
             this.contestId = String(contest.id)
+            this.problemId = ''
             this.status = 5
         },
 
@@ -93,10 +114,13 @@ export default {
             this.status = 6
         },
 
-        submitProblem(problem) {
+        submitProblem() {
+            this.status = 2
+        },
+
+        loadProblem(problem) {
             this.contestId = String(problem.contest)
             this.problemId = problem.id
-            this.status = 2
         }
     }
 }

@@ -1,5 +1,21 @@
 <template>
     <div class="main">
+        <template>
+            <el-backtop>
+                <div style="
+                        height: 100%;
+                        width: 100%;
+                        background-color: #64c8ff;
+                        box-shadow: 0 0 6px rgba(0,0,0, .12);
+                        text-align: center;
+                        line-height: 40px;
+                        color: #1989fa;
+                        border-radius: 30px;"
+                ><i class="el-icon-top"></i>
+                </div>
+            </el-backtop>
+        </template>
+
         <el-input style="margin-bottom: 15px; width: 200px;"
                   placeholder="比赛编号（例如：1393）"
                   v-model="myCid"
@@ -117,7 +133,10 @@ export default {
 
     methods: {
         submitCode() {
-            console.log(this.code)
+            if (this.myCid === '' || this.myPid === '') {
+                this.$message.error('请输入题目的两个编号')
+                return
+            }
             if (this.user === '') {
                 this.$message.error('当前未登录')
                 return
@@ -134,7 +153,7 @@ export default {
                         this.$message.error('提交肯定出错了')
                     } else {
                         this.$message.success('提交大概是成功了')
-                        this.$emit('submitOver')
+                        this.$emit('submitOver', {contest: this.myCid, id: this.myPid})
                     }
                     loading.close()
                 })

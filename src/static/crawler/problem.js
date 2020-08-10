@@ -13,11 +13,15 @@ module.exports = {
         }
 
         request(opts, (e, r, b) => {
+            if (r.statusCode !== 200) {
+                callback(true, '题目序号越界')
+            }
             try {
                 let $ = cheerio.load(b)
                 callback(false, $('div[class=problemindexholder]').html())
             } catch (e) {
-                callback(true, e)
+                console.log(e)
+                callback(true, '获取题面遇到意料之外的错误')
             }
         })
     }
