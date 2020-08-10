@@ -39,6 +39,12 @@
                             比赛题面
                         </span>
                     </el-menu-item>
+                    <el-menu-item index="7">
+                        <span slot="title">
+                            <i class="el-icon-folder"></i>
+                            本地缓存
+                        </span>
+                    </el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main>
@@ -50,6 +56,7 @@
                 <Contest v-if="status===5" :contestId="contestId" v-on:enterProblem="enterProblem"></Contest>
                 <Problem v-if="status===6" :contestId="contestId" :problemId="problemId"
                          v-on:submitProblem="submitProblem" v-on:loadProblem="loadProblem"></Problem>
+                <LocalManager v-if="status===7"></LocalManager>
             </el-main>
         </el-container>
     </el-container>
@@ -62,6 +69,7 @@ import Status from "@/components/Status";
 import ContestList from "@/components/ContestList";
 import Contest from "@/components/Contest";
 import Problem from "@/components/Problem";
+import LocalManager from "@/components/LocalManager";
 
 export default {
     name: "Home",
@@ -82,7 +90,8 @@ export default {
         Status,
         ContestList,
         Contest,
-        Problem
+        Problem,
+        LocalManager
     },
 
     methods: {
