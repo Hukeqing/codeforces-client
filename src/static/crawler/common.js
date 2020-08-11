@@ -5,7 +5,7 @@ let cheerio = require('cheerio')
 module.exports = {
     getXCsrfToken: function (callback) {
         let opts = {
-            url: basic.url,
+            url: 'https://codeforces.com/contest/1/problem/A',
             method: 'GET',
             headers: {
                 'User-Agent': basic.userAgent

@@ -160,7 +160,7 @@ export default {
             let loading = this.$loading({
                 lock: true,
                 text: '正在拉取题面',
-                spinner: 'el-icon-loading',
+                target: document.getElementById('main'),
                 background: 'rgba(0, 0, 0, 0.7)'
             })
             problem.getProblem(this.myCid, this.myPid, (e, d) => {

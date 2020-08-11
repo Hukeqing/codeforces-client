@@ -65,7 +65,6 @@ export default {
             let loading = this.$loading({
                 lock: true,
                 text: '正在登录',
-                spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             })
 
@@ -98,7 +97,6 @@ export default {
             let loading = this.$loading({
                 lock: true,
                 text: '正在退出登录',
-                spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             })
             common.logout(this.logout, (e) => {

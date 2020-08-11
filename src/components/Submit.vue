@@ -144,7 +144,7 @@ export default {
             let loading = this.$loading({
                 lock: true,
                 text: '正在提交',
-                spinner: 'el-icon-loading',
+                target: document.getElementById('main'),
                 background: 'rgba(0, 0, 0, 0.7)'
             })
             common.getXCsrfToken((e, x) => {

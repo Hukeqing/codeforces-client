@@ -5,7 +5,8 @@
             删除账号信息
         </el-button>
         <el-table :data="problems"
-                  style="width: 100%">
+                  style="width: 100%"
+                  v-loading="loading">
             <el-table-column
                 prop="id"
                 label="问题编号"
@@ -40,11 +41,13 @@ export default {
     data() {
         return {
             account: false,
-            problems: []
+            problems: [],
+            loading: false
         }
     },
 
     created() {
+        this.loading = true
         if (window.localStorage.getItem('email') != null)
             this.account = true
         if (window.localStorage.savedProblem != null) {
@@ -58,6 +61,7 @@ export default {
                 this.problems.push(pro)
             }
         }
+        this.loading = false
     },
 
     methods: {

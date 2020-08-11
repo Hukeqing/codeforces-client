@@ -47,7 +47,7 @@
                     </el-menu-item>
                 </el-menu>
             </el-aside>
-            <el-main>
+            <el-main id="main">
                 <Login v-if="status===1" :user="user" :logout="logout" v-on:login="login"></Login>
                 <Submit v-if="status===2" :user="user" :contestId="contestId" :problemId="problemId"
                         v-on:submitOver="submitOver"></Submit>

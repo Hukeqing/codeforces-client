@@ -77,7 +77,6 @@
                 </el-button>
             </el-button-group>
         </template>
-
     </div>
 </template>
 
@@ -104,7 +103,7 @@ export default {
             let loading = this.$loading({
                 lock: true,
                 text: '正在拉取比赛列表',
-                spinner: 'el-icon-loading',
+                target: document.getElementById('main'),
                 background: 'rgba(0, 0, 0, 0.7)'
             })
             fetch('https://codeforces.com/api/contest.list').then(response => response.json()).then(json => {
