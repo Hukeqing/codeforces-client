@@ -62,6 +62,17 @@
 
             </div>
         </div>
+
+        <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%">
+            <el-input v-model="curLink" :disabled="true"></el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">关 闭</el-button>
+                <el-button type="primary" @click="dialogVisible = false">复 制</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -87,7 +98,9 @@ export default {
             problemData: '',
             myCid: '',
             myPid: '',
-            useLocalStorage: false
+            useLocalStorage: false,
+            dialogVisible: false,
+            curLink: ''
         }
     },
 
@@ -112,6 +125,7 @@ export default {
                 this.useLocalStorage = false
                 this.loadProblem()
             }
+            this.$emit('loadProblem', {contest: this.myCid, id: this.myPid})
         },
 
         saveProblem() {
@@ -160,7 +174,6 @@ export default {
                     return
                 }
                 this.problemData = d
-                this.$emit('loadProblem', {contest: this.myCid, id: this.myPid})
                 this.$nextTick(function () { //这里要注意，使用$nextTick等组件数据渲染完之后再调用MathJax渲染方法，要不然会获取不到数据
                     this.commonsVariable.MathQueue("problemMainData");//传入组件id，让组件被MathJax渲染
                 })

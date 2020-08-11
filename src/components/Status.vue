@@ -140,6 +140,8 @@ export default {
         getColor({row, rowIndex}) {
             if (row.verdict === 'OK')
                 return 'accept'
+            if (row.verdict === 'TESTING' || row.verdict === '')
+                return 'testing'
             return 'reject'
         },
     }
@@ -153,6 +155,10 @@ export default {
 
 .el-table .reject {
     background: #ff6464;
+}
+
+.el-table .testing {
+    background: #c8c8ff;
 }
 </style>
 
