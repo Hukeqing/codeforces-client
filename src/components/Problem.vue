@@ -62,17 +62,6 @@
 
             </div>
         </div>
-
-        <el-dialog
-            title="提示"
-            :visible.sync="dialogVisible"
-            width="30%">
-            <el-input v-model="curLink" :disabled="true"></el-input>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">关 闭</el-button>
-                <el-button type="primary" @click="dialogVisible = false">复 制</el-button>
-            </span>
-        </el-dialog>
     </div>
 </template>
 

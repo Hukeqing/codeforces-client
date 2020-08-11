@@ -141,12 +141,16 @@ export default {
                 this.$message.error('当前未登录')
                 return
             }
-            let loading = this.$loading({
-                lock: true,
-                text: '正在提交',
-                target: document.getElementById('main'),
-                background: 'rgba(0, 0, 0, 0.7)'
+            this.$message({
+                type: 'info',
+                message: '你的提交正在提交中，你可以继续进行其他操作'
             })
+            // let loading = this.$loading({
+            //     lock: true,
+            //     text: '正在提交',
+            //     target: document.getElementById('main'),
+            //     background: 'rgba(0, 0, 0, 0.7)'
+            // })
             common.getXCsrfToken((e, x) => {
                 submit.submitCode(x, this.myCid, this.myPid, this.code, this.languageSelect, e => {
                     if (e) {
@@ -155,7 +159,7 @@ export default {
                         this.$message.success('提交大概是成功了')
                         this.$emit('submitOver', {contest: this.myCid, id: this.myPid})
                     }
-                    loading.close()
+                    // loading.close()
                 })
             })
         }

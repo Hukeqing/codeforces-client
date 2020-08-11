@@ -4,6 +4,7 @@
                    v-on:click="removeUser">
             删除账号信息
         </el-button>
+        <span style="margin-left: 60px">总内存占用：{{ (memoryTotal) }} KB(非准确值)</span>
         <el-table :data="problems"
                   style="width: 100%"
                   v-loading="loading">
@@ -15,7 +16,7 @@
             </el-table-column>
             <el-table-column
                 prop="memory"
-                label="占用内存"
+                label="占用内存(KB)"
                 align="center"
                 min-width="100">
             </el-table-column>
@@ -48,20 +49,34 @@ export default {
 
     created() {
         this.loading = true
-        if (window.localStorage.getItem('email') != null)
+        if (window.localStorage.getItem('email') != null) {
             this.account = true
+        }
         if (window.localStorage.savedProblem != null) {
             let problemList = window.localStorage.savedProblem
             problemList = problemList.split(';')
             for (let i = 0; i < problemList.length - 1; ++i) {
                 let pro = {
                     id: problemList[i],
-                    memory: window.localStorage.getItem(problemList[i]).length / 1024 + 'KB'
+                    memory: window.localStorage.getItem(problemList[i]).length / 1024
                 }
                 this.problems.push(pro)
             }
         }
         this.loading = false
+    },
+
+    computed: {
+        memoryTotal() {
+            let total = 0
+            for (let i = 0; i < this.problems.length; ++i)
+                total += this.problems[i].memory
+            if (this.account)
+                total += (window.localStorage.email.length + window.localStorage.password.length) / 1024
+            if (window.localStorage.getItem('email') != null)
+                total += window.localStorage.savedProblem.length / 1024
+            return total
+        }
     },
 
     methods: {

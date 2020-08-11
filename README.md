@@ -1,10 +1,16 @@
 # Codeforces Client
 
-这是一个 codeforces 的本地客户端系统
+**Copyleft (c) 2020.Mauve**
+
+## Codeforces 打开好慢，加载题面好慢
+
+这是一个 codeforces 的本地客户端系统。通过减少拉取的数据量来实现加速 codeforces 
+
+**注意：本系统仅减少拉取数据量，并非加速拉取**
 
 使用 vue 进行编译，后对编译后的文件使用 Electron 打包
 
-[下载地址](https://github.com/Hukeqing/codeforces-client/releases/tag/0.2.0)
+[下载地址](https://github.com/Hukeqing/codeforces-client/releases/tag/0.4.0)
 
 ## 功能列表
  - [x] 登录(0.1.0)
@@ -16,31 +22,33 @@
  - [x] 本地渲染题面(0.2.0)
  - [x] 缓存题面(0.3.0)
  - [ ] 查看某次提交记录
- - [x] 缓存管理系统
+ - [x] 缓存管理系统(0.4.0)
  - [ ] css 自定义页面
- - [x] 解除加载锁定
- - [x] 加快获取 XCsrfToken
+ - [x] 加快获取 XCsrfToken(0.4.0)
+ - [x] 题面中的链接使用本地浏览器打开(0.5.0)
+ - [ ]  problemset 页面
+ - [ ] 多语言
+ - [ ] 将项目转为 electron-vue 项目
 
 ## 本地编译使用方法
-**由于同源策略，本地使用时会出现同源策略问题**
-### Project setup
-```
-npm install
-```
-
-#### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-#### Compiles and minifies for production
-```
-npm run build
-```
-
-#### Lints and fixes files
-```
-npm run lint
-```
+**由于同源策略，如果使用 vue 编译后的文件将会无法正常运行**
 
 **若需要正确在本地编译使用请对编译后的文件使用 Electron 第二次编译**
+
+```shell script
+git clone https://github.com/Hukeqing/codeforces-client.git
+cd codeforces-client
+npm install
+npm run build
+cp ./scr/main/* dist/
+npm install
+npm run package
+```
+
+如果你熟悉 `yarn` 也可以使用 `yarn` 进行编译运行
+
+## 许可证
+
+Codeforces Client 使用 GPL 许可证开源
+
+

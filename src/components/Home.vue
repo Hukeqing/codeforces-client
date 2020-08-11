@@ -33,16 +33,22 @@
                             比赛题目列表
                         </span>
                     </el-menu-item>
-                    <el-menu-item index="6">
+                    <el-menu-item index="7">
                         <span slot="title">
                             <i class="el-icon-document"></i>
                             比赛题面
                         </span>
                     </el-menu-item>
-                    <el-menu-item index="7">
+                    <el-menu-item index="8">
                         <span slot="title">
                             <i class="el-icon-folder"></i>
                             本地缓存
+                        </span>
+                    </el-menu-item>
+                    <el-menu-item index="9">
+                        <span slot="title">
+                            <i class="el-icon-info"></i>
+                            关于
                         </span>
                     </el-menu-item>
                 </el-menu>
@@ -54,9 +60,10 @@
                 <Status v-if="status===3" :user="user"></Status>
                 <ContestList v-if="status===4" v-on:enterContest="enterContest"></ContestList>
                 <Contest v-if="status===5" :contestId="contestId" v-on:enterProblem="enterProblem"></Contest>
-                <Problem v-if="status===6" :contestId="contestId" :problemId="problemId"
+                <Problem v-if="status===7" :contestId="contestId" :problemId="problemId"
                          v-on:submitProblem="submitProblem" v-on:loadProblem="loadProblem"></Problem>
-                <LocalManager v-if="status===7"></LocalManager>
+                <LocalManager v-if="status===8"></LocalManager>
+                <Info v-if="status===9"></Info>
             </el-main>
         </el-container>
     </el-container>
@@ -70,6 +77,7 @@ import ContestList from "@/components/ContestList";
 import Contest from "@/components/Contest";
 import Problem from "@/components/Problem";
 import LocalManager from "@/components/LocalManager";
+import Info from "@/components/Info";
 
 export default {
     name: "Home",
@@ -91,7 +99,8 @@ export default {
         ContestList,
         Contest,
         Problem,
-        LocalManager
+        LocalManager,
+        Info
     },
 
     methods: {

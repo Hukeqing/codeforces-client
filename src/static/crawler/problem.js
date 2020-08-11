@@ -18,7 +18,9 @@ module.exports = {
             }
             try {
                 let $ = cheerio.load(b)
-                callback(false, $('div[class=problemindexholder]').html())
+                // let problem = $('div[class=problemindexholder]').html().replace(/ href=.+?>/, '>')
+                let problem = $('div[class=problemindexholder]').html().replace(/<a /, '<a target="_blank" ')
+                callback(false, problem)
             } catch (e) {
                 console.log(e)
                 callback(true, '获取题面遇到意料之外的错误')
