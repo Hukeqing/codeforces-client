@@ -1,0 +1,226 @@
+<template>
+    <div class="main">
+        <el-form ref="form" label-width="80px"
+                 style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); padding-top: 10px; padding-right: 20px; padding-bottom: 3px">
+            <el-form-item label="题目标签">
+                <el-select v-model="label" multiple placeholder="请选择题目标签">
+                    <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.title"
+                        :value="item.value"
+                        clearable>
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="分数范围">
+                <el-slider
+                    v-model="score"
+                    range
+                    :step="100"
+                    :max="3500">
+                </el-slider>
+            </el-form-item>
+            <el-form-item>
+                <el-cascader
+                    v-model="sortValue"
+                    :options="sortOptions"
+                    :props="{ expandTrigger: 'hover' }"></el-cascader>
+                <el-button type="primary" @click="getProblemSet" style="margin-left: 10px; width: 120px"
+                           :loading="loading">拉取
+                </el-button>
+            </el-form-item>
+        </el-form>
+
+        <template v-if="!notFetch">
+            <el-table :data="problems"
+                      style="width: 100%"
+                      :row-class-name="getColor">
+                <el-table-column
+                    prop="contest"
+                    label="Contest"
+                    align="center"
+                    min-width="75">
+                </el-table-column>
+                <el-table-column
+                    prop="id"
+                    label="ID"
+                    align="center"
+                    min-width="25">
+                </el-table-column>
+                <el-table-column
+                    prop="name"
+                    label="name"
+                    align="center"
+                    min-width="300">
+                </el-table-column>
+                <el-table-column
+                    prop="score"
+                    label="score"
+                    align="center"
+                    min-width="100">
+                </el-table-column>
+                <el-table-column
+                    prop="passed"
+                    label="passed"
+                    align="center"
+                    min-width="50">
+                </el-table-column>
+                <el-table-column
+                    label=""
+                    align="center"
+                    min-width="50">
+                    <template scope="scope">
+                        <el-button type="primary"
+                                   v-on:click="clickProblem(scope.$index)">
+                            进入
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </template>
+    </div>
+</template>
+
+<script>
+let problemSet = require('../static/crawler/problemSet')
+
+export default {
+    name: "ProblemSet",
+
+    data() {
+        return {
+            loading: false,
+            notFetch: true,
+            problems: [],
+            options: [{value: "combine-tags-by-or", title: "*combine tags by OR"},
+                {value: "2-sat", title: "2-sat"},
+                {value: "binary search", title: "binary search"},
+                {value: "bitmasks", title: "bitmasks"},
+                {value: "brute force", title: "brute force"},
+                {value: "chinese remainder theorem", title: "chinese remainder theorem"},
+                {value: "combinatorics", title: "combinatorics"},
+                {value: "constructive algorithms", title: "constructive algorithms"},
+                {value: "data structures", title: "data structures"},
+                {value: "dfs and similar", title: "dfs and similar"},
+                {value: "divide and conquer", title: "divide and conquer"},
+                {value: "dp", title: "dp"},
+                {value: "dsu", title: "dsu"},
+                {value: "expression parsing", title: "expression parsing"},
+                {value: "fft", title: "fft"},
+                {value: "flows", title: "flows"},
+                {value: "games", title: "games"},
+                {value: "geometry", title: "geometry"},
+                {value: "graph matchings", title: "graph matchings"},
+                {value: "graphs", title: "graphs"},
+                {value: "greedy", title: "greedy"},
+                {value: "hashing", title: "hashing"},
+                {value: "implementation", title: "implementation"},
+                {value: "interactive", title: "interactive"},
+                {value: "math", title: "math"},
+                {value: "matrices", title: "matrices"},
+                {value: "meet-in-the-middle", title: "meet-in-the-middle"},
+                {value: "number theory", title: "number theory"},
+                {value: "probabilities", title: "probabilities"},
+                {value: "schedules", title: "schedules"},
+                {value: "shortest paths", title: "shortest paths"},
+                {value: "sortings", title: "sortings"},
+                {value: "string suffix structures", title: "string suffix structures"},
+                {value: "strings", title: "strings"},
+                {value: "ternary search", title: "ternary search"},
+                {value: "trees", title: "trees"},
+                {value: "two pointers", title: "two pointers"}
+            ],
+            label: [],
+            score: [0, 3500],
+            sortOptions: [
+                {
+                    value: '0',
+                    label: '默认排序',
+                },
+                {
+                    value: '1',
+                    label: '按分数排序',
+                    children: [
+                        {
+                            value: 'BY_RATING_ASC',
+                            label: '升序',
+                        },
+                        {
+                            value: 'BY_RATING_DESC',
+                            label: '降序',
+                        }]
+                }, {
+                    value: '2',
+                    label: '按通过人数排序',
+                    children: [
+                        {
+                            value: 'BY_SOLVED_ASC',
+                            label: '升序',
+                        },
+                        {
+                            value: 'BY_SOLVED_DESC',
+                            label: '降序',
+                        }]
+                }
+            ],
+            sortValue: ['0']
+        }
+    },
+
+    methods: {
+        getProblemSet() {
+            this.notFetch = true
+            this.loading = true
+
+            let args = '?'
+
+            if (this.sortValue[0] !== '0')
+                args += 'order=' + this.sortValue[1] + '&'
+            if (this.label.length !== 0)
+                args += 'tags=' + this.label.join(',')
+            if (this.label.length !== 0)
+                args += ',' + this.score[0] + '-' + this.score[1]
+            else
+                args += 'tags=' + this.score[0] + '-' + this.score[1]
+            problemSet.getProblemSetList(args, (e, p) => {
+                if (e) {
+                    console.log(p)
+                    this.$message.error('拉取失败')
+                } else {
+                    this.notFetch = false
+                    this.problems = p
+                }
+                this.loading = false
+            })
+        },
+
+        // eslint-disable-next-line no-unused-vars
+        getColor({row, rowIndex}) {
+            if (row.status === 1)
+                return 'accept'
+            if (row.status === 2)
+                return 'reject'
+        },
+
+        clickProblem(index) {
+            console.log(this.problems[index].id)
+            this.$emit('proMessage', {contest: this.problems[index].contest, id: this.problems[index].id, next: '5'})
+        }
+    }
+}
+</script>
+
+<style scoped>
+.el-select {
+    width: 100%;
+}
+
+.el-table .accept {
+    background: #64ff64;
+}
+
+.el-table .reject {
+    background: #ff6464;
+}
+</style>

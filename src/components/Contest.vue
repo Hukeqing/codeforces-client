@@ -109,7 +109,7 @@ export default {
                 } else {
                     this.problems = p
                     this.notFetch = false
-                    this.$emit('proMessage', {contest: this.myCid, id: '', next: '5'})
+                    this.$emit('proMessage', {contest: this.myCid, id: '', next: '4-2'})
                 }
                 this.loading = false
             })

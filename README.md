@@ -1,6 +1,6 @@
 # Codeforces Client
 
-**Copyleft (c) 2020.Mauve**
+**Copyleft ! 2020.Mauve，版权部分所有，遵循 GPL 授权使用**
 
 ## Codeforces 打开好慢，加载题面好慢
 
@@ -26,7 +26,7 @@
  - [ ] css 自定义页面
  - [x] 加快获取 XCsrfToken(0.4.0)
  - [x] 题面中的链接使用本地浏览器打开(0.5.0)
- - [ ]  problemset 页面
+ - [x]  problemset 页面
  - [ ] 多语言
  - [ ] 将项目转为 electron-vue 项目
 
@@ -50,5 +50,3 @@ npm run package
 ## 许可证
 
 Codeforces Client 使用 GPL 许可证开源
-
-

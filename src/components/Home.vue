@@ -35,7 +35,7 @@
                         <el-menu-item index="4-2">
                         <span slot="title">
                             <i class="el-icon-menu"></i>
-                            比赛题目列表
+                            比赛题目
                         </span>
                         </el-menu-item>
                         <el-menu-item index="4-3">
@@ -48,7 +48,7 @@
                     <el-menu-item index="5">
                         <span slot="title">
                             <i class="el-icon-document"></i>
-                            比赛题面
+                            题面
                         </span>
                     </el-menu-item>
                     <el-menu-item index="6">
@@ -71,7 +71,7 @@
                 <Status v-if="status==='3'" :user="user"></Status>
                 <ContestList v-if="status==='4-1'" v-on:proMessage="proMessage"></ContestList>
                 <Contest v-if="status==='4-2'" :contestId="contestId" v-on:proMessage="proMessage"></Contest>
-                <ProblemSet v-if="status==='4-3'"></ProblemSet>
+                <ProblemSet v-if="status==='4-3'" v-on:proMessage="proMessage"></ProblemSet>
                 <Problem v-if="status==='5'" :contestId="contestId" :problemId="problemId" v-on:proMessage="proMessage"></Problem>
                 <LocalManager v-if="status==='6'"></LocalManager>
                 <About v-if="status==='7'"></About>
