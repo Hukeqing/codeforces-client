@@ -10,7 +10,7 @@
 
 使用 vue 进行编译，后对编译后的文件使用 Electron 打包
 
-[下载地址](https://github.com/Hukeqing/codeforces-client/releases/tag/0.4.0)
+[下载地址](https://github.com/Hukeqing/codeforces-client/releases/tag/v1.0.0)
 
 ## 功能列表
  - [x] 登录(0.1.0)
