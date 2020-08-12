@@ -78,11 +78,6 @@ export default {
     name: "Problem",
 
     created() {
-        this.myCid = this.contestId
-        this.myPid = this.problemId
-        if (this.myCid === '' || this.myPid === '')
-            return
-        this.getProblem()
     },
 
     data() {
@@ -99,7 +94,20 @@ export default {
 
     props: {
         contestId: String,
-        problemId: String
+        problemId: String,
+        wat: Boolean,
+    },
+
+    watch: {
+        wat: function (value) {
+            if (value === true) {
+                this.myCid = this.contestId
+                this.myPid = this.problemId
+                if (this.myCid === '' || this.myPid === '')
+                    return
+                this.getProblem()
+            }
+        }
     },
 
     methods: {
@@ -174,7 +182,7 @@ export default {
                 this.$message.error('请输入题目的两个编号')
                 return
             }
-            this.$emit('proMessage', {contest: this.contestId, id: this.contestId, next: '2'})
+            this.$emit('proMessage', {contest: this.contestId, id: this.problemId, next: '2'})
         }
     }
 }

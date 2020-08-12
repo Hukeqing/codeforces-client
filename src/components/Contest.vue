@@ -79,12 +79,6 @@ let contest = require('../static/crawler/contest')
 export default {
     name: "Contest",
 
-    created() {
-        this.myCid = this.contestId
-        if (this.myCid !== '')
-            this.getContest()
-    },
-
     data() {
         return {
             loading: false,
@@ -95,7 +89,18 @@ export default {
     },
 
     props: {
-        contestId: String
+        contestId: String,
+        wat: Boolean,
+    },
+
+    watch: {
+        wat: function (value) {
+            if (value === true) {
+                this.myCid = this.contestId
+                if (this.myCid !== '')
+                    this.getContest()
+            }
+        }
     },
 
     methods: {
@@ -131,6 +136,12 @@ export default {
 </script>
 
 <style>
+.main {
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
 .el-table .accept {
     background: #64ff64;
 }
@@ -138,13 +149,9 @@ export default {
 .el-table .reject {
     background: #ff6464;
 }
-</style>
 
-
-<style scoped>
-.main {
-    margin-top: 30px;
-    margin-left: 30px;
-    margin-right: 30px;
+.el-table tbody tr:hover > td {
+    background-color: #96ffff !important;
+    font-weight: bolder;
 }
 </style>

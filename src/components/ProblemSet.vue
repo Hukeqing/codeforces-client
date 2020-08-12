@@ -1,5 +1,20 @@
 <template>
     <div class="main">
+        <template>
+            <el-backtop>
+                <div style="
+                        height: 100%;
+                        width: 100%;
+                        background-color: #64c8ff;
+                        box-shadow: 0 0 6px rgba(0,0,0, .12);
+                        text-align: center;
+                        line-height: 40px;
+                        color: #1989fa;
+                        border-radius: 30px;"
+                ><i class="el-icon-top"></i>
+                </div>
+            </el-backtop>
+        </template>
         <el-form ref="form" label-width="80px"
                  style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); padding-top: 10px; padding-right: 20px; padding-bottom: 3px">
             <el-form-item label="题目标签">
@@ -26,7 +41,7 @@
                     v-model="sortValue"
                     :options="sortOptions"
                     :props="{ expandTrigger: 'hover' }"></el-cascader>
-                <el-button type="primary" @click="getProblemSet" style="margin-left: 10px; width: 120px"
+                <el-button type="primary" @click="fetchProblemSet" style="margin-left: 10px; width: 120px"
                            :loading="loading">拉取
                 </el-button>
             </el-form-item>
@@ -79,6 +94,14 @@
                 </el-table-column>
             </el-table>
         </template>
+        <div style="margin-top: 30px">
+            第
+            <el-input-number v-model="page" :min="1" :max="max_page" style="margin-left: 15px; margin-right: 15px"
+                             label="页" :disabled="loading"></el-input-number>
+            / {{max_page}}
+            页
+            <el-button type="primary" style="margin-left: 15px" icon="el-icon-right" :loading="loading" v-on:click="getProblemSet" round></el-button>
+        </div>
     </div>
 </template>
 
@@ -164,11 +187,17 @@ export default {
                         }]
                 }
             ],
-            sortValue: ['0']
+            sortValue: ['0'],
+            page: 1,
+            max_page: 1
         }
     },
 
     methods: {
+        fetchProblemSet() {
+            this.page = 1
+            this.getProblemSet()
+        },
         getProblemSet() {
             this.notFetch = true
             this.loading = true
@@ -183,13 +212,15 @@ export default {
                 args += ',' + this.score[0] + '-' + this.score[1]
             else
                 args += 'tags=' + this.score[0] + '-' + this.score[1]
-            problemSet.getProblemSetList(args, (e, p) => {
+            problemSet.getProblemSetList(this.page, args, (e, p, m) => {
                 if (e) {
                     console.log(p)
                     this.$message.error('拉取失败')
                 } else {
                     this.notFetch = false
                     this.problems = p
+                    m = parseInt(m)
+                    this.max_page = m > this.page ? m : this.page
                 }
                 this.loading = false
             })
@@ -206,21 +237,22 @@ export default {
         clickProblem(index) {
             console.log(this.problems[index].id)
             this.$emit('proMessage', {contest: this.problems[index].contest, id: this.problems[index].id, next: '5'})
-        }
+        },
     }
 }
 </script>
 
 <style scoped>
-.el-select {
-    width: 100%;
-}
-
 .el-table .accept {
     background: #64ff64;
 }
 
 .el-table .reject {
     background: #ff6464;
+}
+
+.el-table tbody tr:hover > td {
+    background-color: #96ffff !important;
+    font-weight: bolder;
 }
 </style>

@@ -66,15 +66,19 @@
                 </el-menu>
             </el-aside>
             <el-main>
-                <Login v-if="status==='1'" :user="user" :logout="logout" v-on:login="login"></Login>
-                <Submit v-if="status==='2'" :user="user" :contestId="contestId" :problemId="problemId" v-on:proMessage="proMessage"></Submit>
+                <Login v-show="status==='1'" :user="user" :logout="logout" v-on:login="login"></Login>
+                <Submit v-show="status==='2'" :user="user" :contestId="contestId" :problemId="problemId"
+                        :wat="watchAttr['2']"
+                        v-on:proMessage="proMessage"></Submit>
                 <Status v-if="status==='3'" :user="user"></Status>
-                <ContestList v-if="status==='4-1'" v-on:proMessage="proMessage"></ContestList>
-                <Contest v-if="status==='4-2'" :contestId="contestId" v-on:proMessage="proMessage"></Contest>
-                <ProblemSet v-if="status==='4-3'" v-on:proMessage="proMessage"></ProblemSet>
-                <Problem v-if="status==='5'" :contestId="contestId" :problemId="problemId" v-on:proMessage="proMessage"></Problem>
-                <LocalManager v-if="status==='6'"></LocalManager>
-                <About v-if="status==='7'"></About>
+                <ContestList v-show="status==='4-1'" v-on:proMessage="proMessage"></ContestList>
+                <Contest v-show="status==='4-2'" :contestId="contestId" v-on:proMessage="proMessage"
+                         :wat="watchAttr['4-2']"></Contest>
+                <ProblemSet v-show="status==='4-3'" v-on:proMessage="proMessage"></ProblemSet>
+                <Problem v-show="status==='5'" :contestId="contestId" :problemId="problemId" :wat="watchAttr['5']"
+                         v-on:proMessage="proMessage"></Problem>
+                <LocalManager v-show="status==='6'"></LocalManager>
+                <About v-show="status==='7'"></About>
             </el-main>
         </el-container>
     </el-container>
@@ -100,7 +104,12 @@ export default {
             user: '',
             logout: '',
             contestId: '',
-            problemId: ''
+            problemId: '',
+            watchAttr: {
+                '2': false,
+                '3': false,
+                '4-2': false
+            }
         }
     },
 
@@ -118,6 +127,7 @@ export default {
 
     methods: {
         changeSelect(index) {
+            this.watchAttr[this.status] = false
             this.status = index
         },
 
@@ -130,7 +140,11 @@ export default {
         proMessage(problem) {
             this.contestId = String(problem.contest)
             this.problemId = problem.id
-            this.status = String(problem.next)
+            if (this.status !== problem.next) {
+                this.watchAttr[this.status] = false
+                this.status = String(problem.next)
+                this.watchAttr[problem.next] = true
+            }
         },
     }
 }

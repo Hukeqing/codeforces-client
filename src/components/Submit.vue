@@ -63,11 +63,6 @@ let common = require('../static/crawler/common')
 export default {
     name: "Submit",
 
-    created() {
-        this.myCid = this.contestId
-        this.myPid = this.problemId
-    },
-
     data() {
         return {
             lang: [{name: 'GNU GCC C11 5.1.0', value: 43},
@@ -129,8 +124,17 @@ export default {
         user: String,
         contestId: String,
         problemId: String,
+        wat: Boolean,
     },
 
+    watch: {
+        wat: function (value) {
+            if (value === true) {
+                this.myCid = this.contestId
+                this.myPid = this.problemId
+            }
+        }
+    },
     methods: {
         submitCode() {
             if (this.myCid === '' || this.myPid === '') {

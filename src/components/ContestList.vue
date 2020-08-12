@@ -16,8 +16,11 @@
                 </div>
             </el-backtop>
         </template>
+        <el-button type="primary" :disabled="curPage === 0" v-on:click="prePage" :loading="isLoading" v-if="notFetch">
+            重新拉取
+        </el-button>
         <template v-if="!notFetch">
-            <el-table :data="contestList.slice(curPage * 20, (curPage + 1) * 20)"
+            <el-table :data="contestList.slice(curPage * 40, (curPage + 1) * 40)"
                       style="width: 100%"
                       :row-class-name="getColor">
                 <el-table-column
@@ -37,7 +40,7 @@
                     align="center"
                     min-width="200">
                     <template slot-scope="scope">
-                        {{ getTime(contestList[scope.$index + curPage * 20].startTimeSeconds) }}
+                        {{ getTime(contestList[scope.$index + curPage * 40].startTimeSeconds) }}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -45,7 +48,7 @@
                     align="center"
                     min-width="100">
                     <template slot-scope="scope">
-                        {{ getLengthTime(contestList[scope.$index + curPage * 20].durationSeconds) }}
+                        {{ getLengthTime(contestList[scope.$index + curPage * 40].durationSeconds) }}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -53,7 +56,7 @@
                     align="center"
                     min-width="100">
                     <template slot-scope="scope">
-                        {{ contestList[scope.$index + curPage * 20].phase.toLowerCase() }}
+                        {{ contestList[scope.$index + curPage * 40].phase.toLowerCase() }}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -62,8 +65,8 @@
                     min-width="50">
                     <template scope="scope">
                         <el-button type="primary"
-                                   v-on:click="clickContest(scope.$index + curPage * 20)"
-                                   :disabled="enterButton(scope.$index + curPage * 20)">
+                                   v-on:click="clickContest(scope.$index + curPage * 40)"
+                                   :disabled="enterButton(scope.$index + curPage * 40)">
                             进入
                         </el-button>
                     </template>
@@ -72,7 +75,7 @@
             <el-button-group style="margin-top: 30px">
                 <el-button type="primary" icon="el-icon-arrow-left" :disabled="curPage === 0" v-on:click="prePage">上一页
                 </el-button>
-                <el-button type="primary" v-on:click="nextPage" :disabled="curPage >= contestList.length / 20 - 1">下一页<i
+                <el-button type="primary" v-on:click="nextPage" :disabled="curPage >= contestList.length / 40 - 1">下一页<i
                     class="el-icon-arrow-right el-icon--right"></i>
                 </el-button>
             </el-button-group>
@@ -201,6 +204,11 @@ export default {
 
 .el-table .contestLine_system_finish {
     background: #ffffff;
+}
+
+.el-table tbody tr:hover > td {
+    background-color: #96ffff !important;
+    font-weight: bolder;
 }
 </style>
 

@@ -3,9 +3,9 @@ let request = require('request')
 let cheerio = require('cheerio')
 
 module.exports = {
-    getProblemSetList: function (args, callback) {
+    getProblemSetList: function (page, args, callback) {
         let opts = {
-            url: 'https://codeforces.com/problemset' + args,
+            url: 'https://codeforces.com/problemset/page/' + page + args,
             method: 'GET',
             headers: {
                 'User-Agent': basic.userAgent
@@ -14,6 +14,17 @@ module.exports = {
         request(opts, (e, r, b) => {
             try {
                 let $ = cheerio.load(b)
+
+                // max page
+                let page = $('div[class="pagination"]').html()
+                if (page === null || page === '') {
+                    page = 1
+                } else {
+                    page = page.match(/pageindex="(\d+?)"/g)
+                    page = page[page.length - 1].match(/\d+/)[0]
+                }
+
+                // problem
                 let problems = $('table[class=problems]').html().replace(/[\r\n]/g, '')
                 let problemList = problems.split('<tr')
                 let res = []
@@ -34,9 +45,9 @@ module.exports = {
                     pro['passed'] = problemList[i].match(/<a title="Participants solved the problem".+?x(\d+?)<\/a>/)[1]
                     res.push(pro)
                 }
-                callback(false, res)
+                callback(false, res, page)
             } catch (e) {
-                callback(true, e)
+                callback(true, e, 0)
             }
         })
     }

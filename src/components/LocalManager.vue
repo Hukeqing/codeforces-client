@@ -96,6 +96,14 @@ export default {
 }
 </script>
 
+
+<style>
+.el-table tbody tr:hover > td {
+    background-color: #96ffff !important;
+    font-weight: bolder;
+}
+</style>
+
 <style scoped>
 
 </style>
