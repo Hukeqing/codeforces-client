@@ -21,14 +21,16 @@
             <el-input style="margin-bottom: 15px; width: 200px;"
                       placeholder="0"
                       v-model="myCid"
-                      clearable>
+                      clearable
+                      :disabled="loading">
             </el-input>
 
 
             <el-button type="primary"
-                       style="margin-bottom: 15px; margin-left: 30px; width: 80px;"
+                       style="margin-bottom: 15px; margin-left: 30px; width: 120px;"
                        round
-                       v-on:click="getContest">
+                       v-on:click="getContest"
+                       :loading="loading">
                 拉取
             </el-button>
         </div>
@@ -85,6 +87,7 @@ export default {
 
     data() {
         return {
+            loading: false,
             notFetch: true,
             problems: [],
             myCid: '',
@@ -98,12 +101,7 @@ export default {
     methods: {
         getContest() {
             this.notFetch = true
-            let loading = this.$loading({
-                lock: true,
-                text: '正在拉取题目',
-                target: document.getElementById('main'),
-                background: 'rgba(0, 0, 0, 0.7)'
-            })
+            this.loading = true
             contest.getContestProblem(this.myCid, (e, p) => {
                 if (e) {
                     console.log(p)
@@ -111,8 +109,9 @@ export default {
                 } else {
                     this.problems = p
                     this.notFetch = false
+                    this.$emit('proMessage', {contest: this.myCid, id: '', next: '5'})
                 }
-                loading.close()
+                this.loading = false
             })
         },
         // eslint-disable-next-line no-unused-vars
@@ -125,7 +124,7 @@ export default {
 
         clickProblem(index) {
             console.log(this.problems[index].id)
-            this.$emit('enterProblem', {contest: this.myCid, id: this.problems[index].id})
+            this.$emit('proMessage', {contest: this.myCid, id: this.problems[index].id, next: '5'})
         }
     }
 }

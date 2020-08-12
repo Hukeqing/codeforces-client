@@ -1,9 +1,6 @@
 <template>
     <div id="app">
-        <p v-if="status===-1" style="position: fixed; top: 40%;left: 50%; transform: translateX(-50%);">
-            请刷新页面来再次尝试加载
-        </p>
-        <Home v-if="status===1"></Home>
+        <Home></Home>
     </div>
 </template>
 
@@ -13,12 +10,6 @@ import Home from "@/components/Home";
 
 export default {
     name: 'App',
-
-    data() {
-        return {
-            status: 1,
-        }
-    },
 
     components: {
         Home

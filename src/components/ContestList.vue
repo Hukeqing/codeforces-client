@@ -1,5 +1,6 @@
 <template>
     <div class="main">
+        <div id="loadingDiv"></div>
         <template>
             <el-backtop>
                 <div style="
@@ -15,7 +16,6 @@
                 </div>
             </el-backtop>
         </template>
-
         <template v-if="!notFetch">
             <el-table :data="contestList.slice(curPage * 20, (curPage + 1) * 20)"
                       style="width: 100%"
@@ -86,12 +86,13 @@ import {timeCycle} from '@/static/time'
 export default {
     name: "ContestList",
 
-    created() {
+    mounted() {
         this.fetchContestList()
     },
 
     data() {
         return {
+            isLoading: false,
             notFetch: true,
             curPage: 0,
             contestList: []
@@ -100,10 +101,11 @@ export default {
 
     methods: {
         fetchContestList() {
+            this.isLoading = true
             let loading = this.$loading({
                 lock: true,
                 text: '正在拉取比赛列表',
-                target: document.getElementById('main'),
+                target: document.getElementById('loadingDiv'),
                 background: 'rgba(0, 0, 0, 0.7)'
             })
             fetch('https://codeforces.com/api/contest.list').then(response => response.json()).then(json => {
@@ -116,6 +118,7 @@ export default {
                 this.contestList = json.result
                 this.curPage = 0
                 this.notFetch = false
+                this.isLoading = false
                 loading.close()
             }).catch(() => {
                 this.$message.error('网络出错')
@@ -173,7 +176,7 @@ export default {
 
         clickContest(index) {
             console.log(this.contestList[index].id)
-            this.$emit('enterContest', {id: this.contestList[index].id})
+            this.$emit('proMessage', {contest: this.contestList[index].id, id: '', next: '4-2'})
         }
     }
 }

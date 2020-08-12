@@ -20,38 +20,41 @@
             <el-input style="margin-bottom: 15px; width: 160px;"
                       placeholder="比赛编号（1393）"
                       v-model="myCid"
-                      clearable>
+                      clearable
+                      :disabled="loading">
             </el-input>
 
             <el-input style="margin-bottom: 15px; margin-left: 15px; width: 90px;"
                       placeholder="ID（A）"
                       v-model="myPid"
-                      clearable>
+                      clearable
+                      :disabled="loading">
             </el-input>
             <el-button type="primary"
                        style="margin-bottom: 15px; margin-left: 15px; width: 120px;"
                        round
-                       v-on:click="getProblem">
+                       v-on:click="getProblem"
+                       :loading="loading">
                 拉取题面
             </el-button>
             <el-button type="success" icon="el-icon-edit"
                        style="margin-bottom: 15px; margin-left: 15px; width: 120px;"
                        round
-                       :disabled="problemData === ''"
+                       :disabled="problemData === '' || loading"
                        v-on:click="submitProblem">
                 提交
             </el-button>
             <el-button type="info"
                        style="margin-bottom: 15px; margin-left: 15px; width: 100px;"
                        round
-                       :disabled="problemData === ''"
+                       :disabled="problemData === '' || loading"
                        v-on:click="saveProblem">
                 {{ useLocalStorage ? '删除缓存' : '缓存此题' }}
             </el-button>
             <el-button type="warning"
                        style="margin-bottom: 15px; margin-left: 15px; width: 100px;"
                        round
-                       :disabled="problemData === '' || !useLocalStorage"
+                       :disabled="problemData === '' || !useLocalStorage || loading"
                        v-on:click="reloadProblem">
                 重新拉取
             </el-button>
@@ -84,6 +87,7 @@ export default {
 
     data() {
         return {
+            loading: false,
             problemData: '',
             myCid: '',
             myPid: '',
@@ -114,7 +118,7 @@ export default {
                 this.useLocalStorage = false
                 this.loadProblem()
             }
-            this.$emit('loadProblem', {contest: this.myCid, id: this.myPid})
+            this.$emit('proMessage', {contest: this.myCid, id: this.myPid, next: '5'})
         },
 
         saveProblem() {
@@ -146,12 +150,7 @@ export default {
         },
 
         loadProblem() {
-            let loading = this.$loading({
-                lock: true,
-                text: '正在拉取题面',
-                target: document.getElementById('main'),
-                background: 'rgba(0, 0, 0, 0.7)'
-            })
+            this.loading = true
             problem.getProblem(this.myCid, this.myPid, (e, d) => {
                 if (d === '') {
                     e = true
@@ -159,14 +158,14 @@ export default {
                 }
                 if (e) {
                     this.$message.error(d)
-                    loading.close()
+                    this.loading = false
                     return
                 }
                 this.problemData = d
                 this.$nextTick(function () { //这里要注意，使用$nextTick等组件数据渲染完之后再调用MathJax渲染方法，要不然会获取不到数据
                     this.commonsVariable.MathQueue("problemMainData");//传入组件id，让组件被MathJax渲染
                 })
-                loading.close()
+                this.loading = false
             })
         },
 
@@ -175,7 +174,7 @@ export default {
                 this.$message.error('请输入题目的两个编号')
                 return
             }
-            this.$emit('submitProblem')
+            this.$emit('proMessage', {contest: this.contestId, id: this.contestId, next: '2'})
         }
     }
 }

@@ -21,31 +21,43 @@
                             状态
                         </span>
                     </el-menu-item>
-                    <el-menu-item index="4">
+                    <el-submenu index="4">
+                        <template slot="title">
+                            <i class="el-icon-folder"></i>
+                            <span>比赛</span>
+                        </template>
+                        <el-menu-item index="4-1">
                         <span slot="title">
                             <i class="el-icon-s-grid"></i>
                             比赛列表
                         </span>
-                    </el-menu-item>
-                    <el-menu-item index="5">
+                        </el-menu-item>
+                        <el-menu-item index="4-2">
                         <span slot="title">
                             <i class="el-icon-menu"></i>
                             比赛题目列表
                         </span>
-                    </el-menu-item>
-                    <el-menu-item index="7">
+                        </el-menu-item>
+                        <el-menu-item index="4-3">
+                        <span slot="title">
+                            <i class="el-icon-s-data"></i>
+                            题目列表
+                        </span>
+                        </el-menu-item>
+                    </el-submenu>
+                    <el-menu-item index="5">
                         <span slot="title">
                             <i class="el-icon-document"></i>
                             比赛题面
                         </span>
                     </el-menu-item>
-                    <el-menu-item index="8">
+                    <el-menu-item index="6">
                         <span slot="title">
                             <i class="el-icon-folder"></i>
                             本地缓存
                         </span>
                     </el-menu-item>
-                    <el-menu-item index="9">
+                    <el-menu-item index="7">
                         <span slot="title">
                             <i class="el-icon-info"></i>
                             关于
@@ -53,17 +65,16 @@
                     </el-menu-item>
                 </el-menu>
             </el-aside>
-            <el-main id="main">
-                <Login v-if="status===1" :user="user" :logout="logout" v-on:login="login"></Login>
-                <Submit v-if="status===2" :user="user" :contestId="contestId" :problemId="problemId"
-                        v-on:submitOver="submitOver"></Submit>
-                <Status v-if="status===3" :user="user"></Status>
-                <ContestList v-if="status===4" v-on:enterContest="enterContest"></ContestList>
-                <Contest v-if="status===5" :contestId="contestId" v-on:enterProblem="enterProblem"></Contest>
-                <Problem v-if="status===7" :contestId="contestId" :problemId="problemId"
-                         v-on:submitProblem="submitProblem" v-on:loadProblem="loadProblem"></Problem>
-                <LocalManager v-if="status===8"></LocalManager>
-                <Info v-if="status===9"></Info>
+            <el-main>
+                <Login v-if="status==='1'" :user="user" :logout="logout" v-on:login="login"></Login>
+                <Submit v-if="status==='2'" :user="user" :contestId="contestId" :problemId="problemId" v-on:proMessage="proMessage"></Submit>
+                <Status v-if="status==='3'" :user="user"></Status>
+                <ContestList v-if="status==='4-1'" v-on:proMessage="proMessage"></ContestList>
+                <Contest v-if="status==='4-2'" :contestId="contestId" v-on:proMessage="proMessage"></Contest>
+                <ProblemSet v-if="status==='4-3'"></ProblemSet>
+                <Problem v-if="status==='5'" :contestId="contestId" :problemId="problemId" v-on:proMessage="proMessage"></Problem>
+                <LocalManager v-if="status==='6'"></LocalManager>
+                <About v-if="status==='7'"></About>
             </el-main>
         </el-container>
     </el-container>
@@ -77,7 +88,8 @@ import ContestList from "@/components/ContestList";
 import Contest from "@/components/Contest";
 import Problem from "@/components/Problem";
 import LocalManager from "@/components/LocalManager";
-import Info from "@/components/Info";
+import About from "@/components/About";
+import ProblemSet from "@/components/ProblemSet";
 
 export default {
     name: "Home",
@@ -100,46 +112,26 @@ export default {
         Contest,
         Problem,
         LocalManager,
-        Info
+        About,
+        ProblemSet
     },
 
     methods: {
         changeSelect(index) {
-            this.status = parseInt(index)
+            this.status = index
         },
 
         login(user) {
             this.user = user.user
             this.logout = user.logout
-            this.status = 0
+            this.status = '0'
         },
 
-        submitOver(problem) {
+        proMessage(problem) {
             this.contestId = String(problem.contest)
             this.problemId = problem.id
-            this.status = 3
+            this.status = String(problem.next)
         },
-
-        enterContest(contest) {
-            this.contestId = String(contest.id)
-            this.problemId = ''
-            this.status = 5
-        },
-
-        enterProblem(problem) {
-            this.contestId = String(problem.contest)
-            this.problemId = problem.id
-            this.status = 6
-        },
-
-        submitProblem() {
-            this.status = 2
-        },
-
-        loadProblem(problem) {
-            this.contestId = String(problem.contest)
-            this.problemId = problem.id
-        }
     }
 }
 </script>

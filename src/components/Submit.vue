@@ -157,7 +157,7 @@ export default {
                         this.$message.error('提交肯定出错了')
                     } else {
                         this.$message.success('提交大概是成功了')
-                        this.$emit('submitOver', {contest: this.myCid, id: this.myPid})
+                        this.$emit('proMessage', {contest: this.myCid, id: this.myPid, next: '3'})
                     }
                     // loading.close()
                 })
