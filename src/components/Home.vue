@@ -77,7 +77,7 @@
                 <ProblemSet v-show="status==='4-3'" v-on:proMessage="proMessage"></ProblemSet>
                 <Problem v-show="status==='5'" :contestId="contestId" :problemId="problemId" :wat="watchAttr['5']"
                          v-on:proMessage="proMessage"></Problem>
-                <LocalManager v-show="status==='6'"></LocalManager>
+                <LocalManager v-if="status==='6'"></LocalManager>
                 <About v-show="status==='7'"></About>
             </el-main>
         </el-container>

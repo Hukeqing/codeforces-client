@@ -9,7 +9,10 @@
             <a href="https://github.com/Hukeqing/codeforces-client/releases" target="_blank"
                style="text-decoration:none;color: #3a8ee6; margin-left: 40px">Latest Release</a>
         </h2>
-        <p>当前的版本号为：1.0.0</p>
+        <p style="font-size: 20px">当前的版本号为：{{ version }}</p>
+        <p>最新的版本号：{{ latestVersion }}
+            <a :href="updateLink" target="_blank"
+               style="text-decoration:none;color: #3a8ee6; margin-left: 20px">下载链接</a></p>
         <p style="margin-top: 120px; font-size: 14px">
             Copyleft (ɔ) 2020.Mauve，版权部分所有，遵循 GPL 授权使用
         </p>
@@ -19,6 +22,29 @@
 <script>
 export default {
     name: "Info",
+
+    data() {
+        return {
+            version: 'v1.0.1',
+            latestVersion: '',
+            updateLink: '',
+        }
+    },
+
+    created() {
+        fetch('https://api.github.com/repos/Hukeqing/codeforces-client/releases/latest').then(response => response.json()).then(json => {
+            this.latestVersion = json.tag_name
+            this.updateLink = json.html_url
+            if (this.latestVersion !== this.version) {
+                this.$message({
+                    dangerouslyUseHTMLString: true,
+                    message: '检测到更新的版本：' + this.latestVersion + '<br>' + json.body.replace(/\r\n/g, '<br>').replace(/ - \[x\]/g, '&#12288;')
+                })
+            }
+        }).catch(() => {
+            this.$message.error('检测版本出错')
+        })
+    }
 }
 </script>
 
