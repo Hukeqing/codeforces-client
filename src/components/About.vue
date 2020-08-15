@@ -38,7 +38,8 @@ export default {
             if (this.latestVersion !== this.version) {
                 this.$message({
                     dangerouslyUseHTMLString: true,
-                    message: '检测到更新的版本：' + this.latestVersion + '<br>' + json.body.replace(/\r\n/g, '<br>').replace(/ - \[x\]/g, '&#12288;')
+                    message: '检测到更新的版本：' + this.latestVersion + '<br>' + json.body.replace(/\r\n/g, '<br>').replace(/ - \[x\]/g, '&#12288;'),
+                    showClose: true
                 })
             }
         }).catch(() => {

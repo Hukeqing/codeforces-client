@@ -53,8 +53,8 @@
                     </el-menu-item>
                     <el-menu-item index="6">
                         <span slot="title">
-                            <i class="el-icon-folder"></i>
-                            本地缓存
+                            <i class="el-icon-setting"></i>
+                            设置
                         </span>
                     </el-menu-item>
                     <el-menu-item index="7">

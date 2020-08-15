@@ -107,6 +107,9 @@ export default {
 
     created() {
         this.getStatus()
+        if (this.user !== '') {
+            this.startInter(this.getStatus)
+        }
     },
 
     data() {
@@ -124,6 +127,13 @@ export default {
     },
 
     methods: {
+        startInter(func) {
+            setInterval(function () {
+                if (!this.loading)
+                    func()
+            }, 5000);
+        },
+
         getStatus() {
             if (this.user === '') {
                 this.$message.error('当前未登录')
