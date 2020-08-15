@@ -73,8 +73,8 @@
 </template>
 
 <script>
-import '../static/problem/problem-statement.css'
-import '../static/problem/ttypography.css'
+import '../static/css/problem-statement.css'
+import '../static/css/ttypography.css'
 
 let problem = require('../static/crawler/problem')
 
@@ -165,6 +165,7 @@ export default {
 
         loadProblem() {
             this.loading = true
+            this.problemData = ''
             problem.getProblem(this.myCid, this.myPid, (e, d) => {
                 if (d === '') {
                     e = true

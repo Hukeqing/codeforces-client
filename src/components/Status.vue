@@ -35,25 +35,31 @@
                       style="width: 100%"
                       :row-class-name="getColor">
                 <el-table-column
-                    prop="id"
                     label="ID"
                     align="center"
-                    min-width="50">
+                    min-width="40">
+                    <template scope="scope">
+                        <el-link type="primary" v-on:click="openSubmit(scope.$index)">
+                            {{ submits[scope.$index].id }}
+                        </el-link>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    label="StartTime"
+                    label="SubmitTime"
                     align="center"
                     min-width="100">
-                    <template slot-scope="scope">
+                    <template scope="scope">
                         {{ getTime(submits[scope.$index].creationTimeSeconds) }}
                     </template>
                 </el-table-column>
                 <el-table-column
                     label="problem"
                     align="center"
-                    min-width="100">
+                    min-width="120">
                     <template scope="scope">
-                        {{ getProblemName(scope.$index) }}
+                        <el-link type="primary" v-on:click="gotoProblem(scope.$index)">
+                            {{ getProblemName(scope.$index) }}
+                        </el-link>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -72,7 +78,7 @@
                     prop="timeConsumedMillis"
                     label="Time"
                     align="center"
-                    min-width="35">
+                    min-width="30">
                 </el-table-column>
                 <el-table-column
                     label="Member"
@@ -159,11 +165,24 @@ export default {
         // eslint-disable-next-line no-unused-vars
         getColor({row, rowIndex}) {
             if (row.verdict === 'OK')
-                return 'accept'
-            if (row.verdict === 'TESTING' || row.verdict === '')
-                return 'testing'
-            return 'reject'
+                return 'verdict-accepted'
+            if (row.verdict === 'TESTING' || row.verdict === '' || row.verdict === null)
+                return 'verdict-waiting'
+            return 'verdict-failed'
         },
+
+        openSubmit(index) {
+            window.open('https://codeforces.com/contest/1399/submission/' + this.submits[index].id)
+        },
+
+        gotoProblem(index) {
+            let curSubmit = this.submits[index]
+            this.$emit('proMessage', {
+                contest: String(curSubmit.problem.contestId),
+                id: curSubmit.problem.index,
+                next: '5'
+            })
+        }
     }
 }
 </script>
@@ -175,20 +194,4 @@ export default {
     margin-right: 30px;
 }
 
-.el-table .accept {
-    background: #64ff64;
-}
-
-.el-table .reject {
-    background: #ff6464;
-}
-
-.el-table .testing {
-    background: #c8c8ff;
-}
-
-.el-table tbody tr:hover > td {
-    background-color: #96ffff !important;
-    font-weight: bolder;
-}
 </style>

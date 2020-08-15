@@ -19,16 +19,19 @@
         <el-input style="margin-bottom: 15px; width: 200px;"
                   placeholder="比赛编号（例如：1393）"
                   v-model="myCid"
+                  :disabled="onSubmit"
                   clearable>
         </el-input>
 
         <el-input style="margin-bottom: 15px; margin-left: 30px; width: 100px;"
                   placeholder="ID（A）"
                   v-model="myPid"
+                  :disabled="onSubmit"
                   clearable>
         </el-input>
 
         <el-select v-model="languageSelect" style="margin-bottom: 15px; margin-left: 30px; width: 200px;"
+                   :disabled="onSubmit"
                    placeholder="language">
             <el-option
                 v-for="item in lang"
@@ -41,8 +44,9 @@
         <el-button type="primary"
                    style="margin-bottom: 15px; margin-left: 30px; width: 80px;"
                    round
-                   v-on:click="submitCode">
-            提交
+                   v-on:click="submitCode"
+                   :loading="onSubmit">
+            {{ onSubmit ? '提交中' : '提交' }}
         </el-button>
 
         <el-input
@@ -51,6 +55,7 @@
             placeholder="请将代码复制粘贴至此处"
             v-model="code"
             class="rt-input"
+            :disabled="onSubmit"
             :autosize="{ minRows: 10 }">
         </el-input>
     </div>
@@ -113,6 +118,7 @@ export default {
                 {name: 'Microsoft Q#', value: 56},
                 {name: 'Text', value: 57},
                 {name: 'UnknownX', value: 62}],
+            onSubmit: false,
             code: '',
             languageSelect: 50,
             myCid: '',
@@ -147,7 +153,7 @@ export default {
             }
             this.$message({
                 type: 'info',
-                message: '你的提交正在提交中，你可以继续进行其他操作'
+                message: '你的代码正在提交中，你可以继续进行其他操作'
             })
             // let loading = this.$loading({
             //     lock: true,

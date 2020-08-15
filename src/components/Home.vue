@@ -70,7 +70,7 @@
                 <Submit v-show="status==='2'" :user="user" :contestId="contestId" :problemId="problemId"
                         :wat="watchAttr['2']"
                         v-on:proMessage="proMessage"></Submit>
-                <Status v-if="status==='3'" :user="user"></Status>
+                <Status v-if="status==='3'" :user="user" v-on:proMessage="proMessage"></Status>
                 <ContestList v-show="status==='4-1'" v-on:proMessage="proMessage"></ContestList>
                 <Contest v-show="status==='4-2'" :contestId="contestId" v-on:proMessage="proMessage"
                          :wat="watchAttr['4-2']"></Contest>
@@ -94,6 +94,8 @@ import Problem from "@/components/Problem";
 import LocalManager from "@/components/LocalManager";
 import About from "@/components/About";
 import ProblemSet from "@/components/ProblemSet";
+
+import '../static/css/status.css'
 
 export default {
     name: "Home",

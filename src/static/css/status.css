@@ -1,0 +1,38 @@
+.el-table .verdict-accepted {
+    background-color: #c8ffc8;
+    font-weight: bold;
+}
+
+.verdict-accepted-challenged {
+    background-color: #c8ffc8;
+}
+
+.el-table .verdict-failed {
+    background-color: #ffc8c8;
+}
+
+.verdict-rejected {
+    color: #00a;
+}
+
+.verdict-waiting {
+    color: #c8c8c8;
+}
+
+.verdict-successful-challenge {
+    font-weight: bold;
+    background-color: #c8ffc8;
+}
+
+.verdict-unsuccessful-challenge {
+    color: #00a;
+}
+
+.verdict-challenged {
+    background-color: #ffc8c8;
+    font-weight: bold;
+}
+
+.el-table tbody tr:hover > td {
+    background-color: #c8ffff !important;
+}

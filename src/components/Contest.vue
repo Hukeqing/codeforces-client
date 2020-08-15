@@ -122,9 +122,9 @@ export default {
         // eslint-disable-next-line no-unused-vars
         getColor({row, rowIndex}) {
             if (row.status === 1)
-                return 'accept'
+                return 'verdict-accepted'
             if (row.status === 2)
-                return 'reject'
+                return 'verdict-failed'
         },
 
         clickProblem(index) {
@@ -135,23 +135,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .main {
     margin-top: 30px;
     margin-left: 30px;
     margin-right: 30px;
-}
-
-.el-table .accept {
-    background: #64ff64;
-}
-
-.el-table .reject {
-    background: #ff6464;
-}
-
-.el-table tbody tr:hover > td {
-    background-color: #96ffff !important;
-    font-weight: bolder;
 }
 </style>

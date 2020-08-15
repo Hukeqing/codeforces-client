@@ -24,7 +24,7 @@ module.exports = {
                     page = page[page.length - 1].match(/\d+/)[0]
                 }
 
-                // problem
+                // css
                 let problems = $('table[class=problems]').html().replace(/[\r\n]/g, '')
                 let problemList = problems.split('<tr')
                 let res = []

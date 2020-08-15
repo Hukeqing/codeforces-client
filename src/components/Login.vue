@@ -23,7 +23,7 @@
             </div>
             <div class="inline-div" v-if="user!==''">
                 <h1 style="font-size: 18px; font-weight: bolder">
-                    已经获取到登录的账号信息：{{user}}
+                    已经获取到登录的账号信息：{{ user }}
                 </h1>
                 <el-button type="primary" v-on:click="back()" style="width: 120px" round>返回</el-button>
                 <el-button type="primary" v-on:click="toLogout()" style="width: 120px" round>退出登录</el-button>

@@ -8,16 +8,16 @@ module.exports = {
             ftaa: '',
             bfaa: '',
             action: 'submitSolutionFormSubmitted',
-            contestId: contest,
+            // contestId: contest,
             submittedProblemIndex: problem,
             programTypeId: lang,
-            source : code,
-            tabSize : 4,
+            source: code,
+            tabSize: 4,
             sourceFile: ''
         }
 
         let opts = {
-            url: 'http://codeforces.com/problemset/submit?csrf_token=' + xCsrfToken,
+            url: 'https://codeforces.com/contest/' + contest + '/submit?csrf_token=' + xCsrfToken,
             method: 'POST',
             headers: {
                 'User-Agent': basic.userAgent
