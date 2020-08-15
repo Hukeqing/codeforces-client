@@ -18,7 +18,6 @@ module.exports = {
             }
             try {
                 let $ = cheerio.load(b)
-                // let problem = $('div[class=problemindexholder]').html().replace(/ href=.+?>/, '>')
                 let problem = $('div[class=problemindexholder]').html().replace(/<a /g, '<a target="_blank" ')
                 callback(false, problem)
             } catch (e) {

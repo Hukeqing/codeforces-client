@@ -59,10 +59,14 @@
                 重新拉取
             </el-button>
         </div>
+        <div>
+        <span v-for="test in tests" :key="test.id" style="margin-left: 10px">
+            <el-button size="mini" v-on:click="copyTest(test.id)" round> 拷贝样例 {{ test.id + 1 }}</el-button>
+        </span>
+        </div>
 
         <div id="problemMainData" class="problemMainData">
             <div v-html="problemData">
-
             </div>
         </div>
     </div>
@@ -88,7 +92,8 @@ export default {
             myPid: '',
             useLocalStorage: false,
             dialogVisible: false,
-            curLink: ''
+            curLink: '',
+            tests: []
         }
     },
 
@@ -122,6 +127,7 @@ export default {
                 this.$nextTick(function () { //这里要注意，使用$nextTick等组件数据渲染完之后再调用MathJax渲染方法，要不然会获取不到数据
                     this.commonsVariable.MathQueue("problemMainData");//传入组件id，让组件被MathJax渲染
                 })
+                this.loadProblemTest()
             } else {
                 this.useLocalStorage = false
                 this.loadProblem()
@@ -174,6 +180,7 @@ export default {
                     this.commonsVariable.MathQueue("problemMainData");//传入组件id，让组件被MathJax渲染
                 })
                 this.loading = false
+                this.loadProblemTest()
             })
         },
 
@@ -183,6 +190,28 @@ export default {
                 return
             }
             this.$emit('proMessage', {contest: this.contestId, id: this.problemId, next: '2'})
+        },
+
+        loadProblemTest() {
+            this.tests = []
+            let test = this.problemData.match(/<pre>[\w\W]+?<\/pre>/g)
+            for (let i = 0; i < test.length; i += 2)
+                this.tests.push({id: i / 2, value: test[i].match(/<pre>([\w\W]+?)<\/pre>/)[1]})
+        },
+
+        copyTest(id) {
+            let tag = document.createElement('textarea');
+            tag.setAttribute('id', 'cp_hgz_input');
+            tag.value = this.tests[id].value;
+            document.getElementsByTagName('body')[0].appendChild(tag);
+            document.getElementById('cp_hgz_input').select();
+            document.execCommand('copy');
+            document.getElementById('cp_hgz_input').remove();
+            this.$notify({
+                title: '成功',
+                message: '拷贝成功',
+                type: 'success'
+            });
         }
     }
 }
