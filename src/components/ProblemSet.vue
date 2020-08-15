@@ -52,22 +52,34 @@
                       style="width: 100%"
                       :row-class-name="getColor">
                 <el-table-column
-                    prop="contest"
                     label="Contest"
                     align="center"
                     min-width="75">
+                    <template scope="scope">
+                        <el-link type="primary" v-on:click="clickContest(scope.$index)">
+                            {{ problems[scope.$index].contest }}
+                        </el-link>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="id"
                     label="ID"
                     align="center"
                     min-width="25">
+                    <template scope="scope">
+                        <el-link type="primary" v-on:click="clickProblem(scope.$index)">
+                            {{ problems[scope.$index].id }}
+                        </el-link>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="name"
                     label="name"
                     align="center"
                     min-width="300">
+                    <template scope="scope">
+                        <el-link type="primary" v-on:click="clickProblem(scope.$index)">
+                            {{ problems[scope.$index].name }}
+                        </el-link>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="score"
@@ -81,26 +93,17 @@
                     align="center"
                     min-width="50">
                 </el-table-column>
-                <el-table-column
-                    label=""
-                    align="center"
-                    min-width="50">
-                    <template scope="scope">
-                        <el-button type="primary"
-                                   v-on:click="clickProblem(scope.$index)">
-                            进入
-                        </el-button>
-                    </template>
-                </el-table-column>
             </el-table>
         </template>
+
         <div style="margin-top: 30px">
             第
             <el-input-number v-model="page" :min="1" :max="max_page" style="margin-left: 15px; margin-right: 15px"
                              label="页" :disabled="loading"></el-input-number>
-            / {{max_page}}
+            / {{ max_page }}
             页
-            <el-button type="primary" style="margin-left: 15px" icon="el-icon-right" :loading="loading" v-on:click="getProblemSet" round></el-button>
+            <el-button type="primary" style="margin-left: 15px" icon="el-icon-right" :loading="loading"
+                       v-on:click="getProblemSet" round></el-button>
         </div>
     </div>
 </template>
@@ -232,6 +235,10 @@ export default {
                 return 'verdict-accepted'
             if (row.status === 2)
                 return 'verdict-failed'
+        },
+
+        clickContest(index) {
+            this.$emit('proMessage', {contest: this.problems[index].contest, id: '', next: '4-2'})
         },
 
         clickProblem(index) {

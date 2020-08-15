@@ -40,33 +40,30 @@
                       style="width: 100%"
                       :row-class-name="getColor">
                 <el-table-column
-                    prop="id"
                     label="ID"
                     align="center"
                     min-width="50">
+                    <template scope="scope">
+                        <el-link type="primary" v-on:click="clickProblem(scope.$index)">
+                            {{ problems[scope.$index].id }}
+                        </el-link>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="name"
                     label="name"
                     align="center"
                     min-width="300">
+                    <template scope="scope">
+                        <el-link type="primary" v-on:click="clickProblem(scope.$index)">
+                            {{ problems[scope.$index].name }}
+                        </el-link>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="passed"
                     label="passed"
                     align="center"
                     min-width="50">
-                </el-table-column>
-                <el-table-column
-                    label=""
-                    align="center"
-                    min-width="50">
-                    <template scope="scope">
-                        <el-button type="primary"
-                                   v-on:click="clickProblem(scope.$index)">
-                            进入
-                        </el-button>
-                    </template>
                 </el-table-column>
             </el-table>
         </template>

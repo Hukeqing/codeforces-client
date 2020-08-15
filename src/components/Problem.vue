@@ -166,6 +166,7 @@ export default {
         loadProblem() {
             this.loading = true
             this.problemData = ''
+            this.tests = []
             problem.getProblem(this.myCid, this.myPid, (e, d) => {
                 if (d === '') {
                     e = true

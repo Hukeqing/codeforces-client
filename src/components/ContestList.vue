@@ -24,16 +24,32 @@
                       style="width: 100%"
                       :row-class-name="getColor">
                 <el-table-column
-                    prop="id"
                     label="ID"
                     align="right"
                     min-width="50">
+                    <template slot-scope="scope">
+                        <el-link v-if="enterButton(scope.$index + curPage * 40)" type="primary"
+                                 v-on:click="clickContest(scope.$index + curPage * 40)">
+                            {{ contestList[scope.$index + curPage * 40].id }}
+                        </el-link>
+                        <el-link v-else type="info">
+                            {{ contestList[scope.$index + curPage * 40].id }}
+                        </el-link>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="name"
                     label="Name"
                     align="center"
                     min-width="300">
+                    <template slot-scope="scope">
+                        <el-link v-if="enterButton(scope.$index + curPage * 40)" type="primary"
+                                 v-on:click="clickContest(scope.$index + curPage * 40)">
+                            {{ contestList[scope.$index + curPage * 40].name }}
+                        </el-link>
+                        <el-link v-else type="info">
+                            {{ contestList[scope.$index + curPage * 40].name }}
+                        </el-link>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     label="StartTime"
@@ -57,18 +73,6 @@
                     min-width="100">
                     <template slot-scope="scope">
                         {{ contestList[scope.$index + curPage * 40].phase.toLowerCase() }}
-                    </template>
-                </el-table-column>
-                <el-table-column
-                    label=""
-                    align="center"
-                    min-width="50">
-                    <template scope="scope">
-                        <el-button type="primary"
-                                   v-on:click="clickContest(scope.$index + curPage * 40)"
-                                   :disabled="enterButton(scope.$index + curPage * 40)">
-                            进入
-                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -168,12 +172,12 @@ export default {
         enterButton(index) {
             switch (this.contestList[index].phase) {
                 case 'BEFORE':
-                    return true
+                    return false
                 case 'CODING':
                 case 'PENDING_SYSTEM_TEST':
                 case 'SYSTEM_TEST':
                 case 'FINISHED':
-                    return false
+                    return true
             }
         },
 
@@ -187,7 +191,7 @@ export default {
 
 <style>
 .el-table .contestLine_before {
-    background: #c8ffff;
+    background: #c8c8ff;
 }
 
 .el-table .contestLine_coding {
@@ -209,11 +213,4 @@ export default {
 </style>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
-}
-
-.fade-enter, .fade-leave-to {
-    opacity: 0;
-}
 </style>
