@@ -101,7 +101,9 @@
             :title="curSubmission"
             :visible.sync="submissionDialog"
             width="80%">
-            <el-button size="mini" v-on:click="copyCode" style="margin-bottom: 20px" :loading="onGetSubmission" round>拷 贝</el-button>
+            <el-button size="mini" v-on:click="copyCode" style="margin-bottom: 20px"
+                       :loading="onGetSubmission" round>拷 贝
+            </el-button>
             <el-input
                 type="textarea"
                 :rows="10"

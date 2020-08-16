@@ -82,10 +82,6 @@ export default {
             })
         },
 
-        back() {
-            this.$emit('login', {user: this.user, logout: this.logout})
-        },
-
         toLogout() {
             // let loading = this.$loading({
             //     lock: true,

@@ -36,3 +36,11 @@
 .el-table tbody tr:hover > td {
     background-color: #e6ffff !important;
 }
+
+.el-divider__text, .el-link, .el-table {
+    font-size: inherit !important;
+}
+
+body {
+    font-size: 14px;
+}

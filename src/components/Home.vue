@@ -97,6 +97,16 @@ import '../static/css/status.css'
 export default {
     name: "Home",
 
+    created() {
+        let setting = {
+            fontsize: 14
+        }
+        if (window.localStorage.getItem('setting') != null) {
+            setting = JSON.parse(window.localStorage.getItem('setting'))
+        }
+        document.getElementsByTagName('body')[0].style.fontSize = setting.fontsize + 'px'
+    },
+
     data() {
         return {
             status: 0,
@@ -108,7 +118,7 @@ export default {
                 '2': false,
                 '3': false,
                 '4-2': false
-            }
+            },
         }
     },
 
