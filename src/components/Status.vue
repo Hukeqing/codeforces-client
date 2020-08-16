@@ -16,11 +16,11 @@
             </el-backtop>
         </template>
         拉取提交列表长度：
-        <el-input style="margin-bottom: 15px; width: 200px;"
-                  placeholder="0"
-                  v-model="count"
-                  clearable>
-        </el-input>
+        <el-input-number style="margin-bottom: 15px; width: 200px;"
+                         placeholder="0"
+                         v-model="count"
+                         clearable>
+        </el-input-number>
 
         <el-button type="primary"
                    style="margin-bottom: 15px; margin-left: 30px; width: 120px;"
@@ -130,9 +130,6 @@ export default {
 
     created() {
         this.getStatus()
-        if (this.user !== '') {
-            this.startInter(this.getStatus)
-        }
     },
 
     data() {
@@ -145,7 +142,8 @@ export default {
             curSubmission: '',
             onGetSubmission: false,
             submissionDialog: false,
-            code: ''
+            code: '',
+            timeOut: null
         }
     },
 
@@ -154,11 +152,10 @@ export default {
     },
 
     methods: {
-        startInter(func) {
-            setInterval(function () {
-                if (!this.loading)
-                    func()
-            }, 5000);
+        startTimeout(func, time) {
+            return setTimeout(function () {
+                func()
+            }, time);
         },
 
         getStatus() {
@@ -167,6 +164,10 @@ export default {
                 return
             }
             this.loading = true
+            if (this.timeOut !== null) {
+                clearTimeout(this.timeOut)
+                this.timeOut = null
+            }
             fetch('https://codeforces.com/api/user.status?handle='
                 + this.user + '&from=' + this.from + '&count=' + this.count)
                 .then(response => response.json()).then(json => {
@@ -178,6 +179,7 @@ export default {
                 this.submits = json.result
                 this.notFetch = false
                 this.loading = false
+                this.timeOut = this.startTimeout(this.getStatus, this.count <= 20 ? 5000 : this.count * 1000)
             }).catch(() => {
                 this.$message.error('网络出错')
                 this.notFetch = false

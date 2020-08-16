@@ -4,15 +4,36 @@
             Codeforces Client
         </h1>
         <h2>
-            <a href="https://github.com/Hukeqing/codeforces-client" target="_blank"
-               style="text-decoration:none;color: #3a8ee6; margin-right: 40px">Source Code</a>
+            <a href="https://github.com/Hukeqing/codeforces-client" target="_blank" style="text-decoration:none;">
+                <el-link type="primary">
+                    查看源码
+                </el-link>
+            </a>
+            <br>
+            <br>
             <a href="https://github.com/Hukeqing/codeforces-client/releases" target="_blank"
-               style="text-decoration:none;color: #3a8ee6; margin-left: 40px">Latest Release</a>
+               style="text-decoration:none; margin-top: 20px">
+                <el-link type="primary">
+                    下载其他版本
+                </el-link>
+            </a>
+            <br>
+            <br>
+            <a href="https://github.com/Hukeqing/codeforces-client/issues/new" target="_blank"
+               style="text-decoration:none;">
+                <el-link type="primary">
+                    提交反馈与建议
+                </el-link>
+            </a>
         </h2>
         <p style="font-size: 20px">当前的版本号为：{{ version }}</p>
         <p>最新的版本号：{{ latestVersion }}
             <a :href="updateLink" target="_blank"
-               style="text-decoration:none;color: #3a8ee6; margin-left: 20px">下载链接</a></p>
+               style="text-decoration:none; margin-left: 20px">
+                <el-link type="primary">
+                    下载链接
+                </el-link>
+            </a></p>
         <p style="margin-top: 120px; font-size: 14px">
             Copyleft (ɔ) 2020.Mauve，版权部分所有，遵循 GPL 授权使用
         </p>

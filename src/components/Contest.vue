@@ -93,6 +93,7 @@ export default {
     watch: {
         wat: function (value) {
             if (value === true) {
+                if (this.myCid === this.contestId) return
                 this.myCid = this.contestId
                 if (this.myCid !== '')
                     this.getContest()

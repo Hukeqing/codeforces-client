@@ -16,7 +16,7 @@
                 </div>
             </el-backtop>
         </template>
-        <el-button type="primary" :disabled="curPage === 0" v-on:click="prePage" :loading="isLoading" v-if="notFetch">
+        <el-button type="primary" v-on:click="fetchContestList" :loading="isLoading">
             重新拉取
         </el-button>
         <template v-if="!notFetch">
@@ -77,9 +77,11 @@
                 </el-table-column>
             </el-table>
             <el-button-group style="margin-top: 30px">
-                <el-button type="primary" icon="el-icon-arrow-left" :disabled="curPage === 0" v-on:click="prePage">上一页
+                <el-button type="primary" icon="el-icon-arrow-left" :disabled="curPage === 0" v-on:click="prePage"
+                           :loading="isLoading">上一页
                 </el-button>
-                <el-button type="primary" v-on:click="nextPage" :disabled="curPage >= contestList.length / 40 - 1">下一页<i
+                <el-button type="primary" v-on:click="nextPage" :disabled="curPage >= contestList.length / 40 - 1"
+                           :loading="isLoading">下一页<i
                     class="el-icon-arrow-right el-icon--right"></i>
                 </el-button>
             </el-button-group>
@@ -93,7 +95,7 @@ import {timeCycle} from '@/static/js/time'
 export default {
     name: "ContestList",
 
-    mounted() {
+    created() {
         this.fetchContestList()
     },
 
@@ -109,28 +111,28 @@ export default {
     methods: {
         fetchContestList() {
             this.isLoading = true
-            let loading = this.$loading({
-                lock: true,
-                text: '正在拉取比赛列表',
-                target: document.getElementById('loadingDiv'),
-                background: 'rgba(0, 0, 0, 0.7)'
-            })
+            // let loading = this.$loading({
+            //     lock: true,
+            //     text: '正在拉取比赛列表',
+            //     target: document.getElementById('loadingDiv'),
+            //     background: 'rgba(0, 0, 0, 0.7)'
+            // })
             fetch('https://codeforces.com/api/contest.list').then(response => response.json()).then(json => {
                 if (json.status === 'FAILED') {
                     this.$message.error('意料之外的错误')
                     this.onFetch = false
-                    loading.close()
+                    // loading.close()
                     return
                 }
                 this.contestList = json.result
                 this.curPage = 0
                 this.notFetch = false
                 this.isLoading = false
-                loading.close()
+                // loading.close()
             }).catch(() => {
                 this.$message.error('网络出错')
                 this.onFetch = false
-                loading.close()
+                // loading.close()
             })
         },
 
