@@ -9,10 +9,14 @@
                   style="width: 100%"
                   v-loading="loading">
             <el-table-column
-                prop="id"
                 label="问题编号"
                 align="center"
                 min-width="100">
+                <template scope="scope">
+                    <el-link type="primary" v-on:click="clickProblem(scope.$index)">
+                        {{ problems[scope.$index].id }}
+                    </el-link>
+                </template>
             </el-table-column>
             <el-table-column
                 prop="memory"
@@ -91,6 +95,19 @@ export default {
             window.localStorage.removeItem('email');
             window.localStorage.removeItem('password');
             this.account = false
+        },
+
+        clickProblem(index) {
+            let id = this.problems[index].id
+
+            let contestId = id.match(/(\d+)/)[0]
+            let problem = id.match(/\d+(\w+)/)[1]
+
+            this.$emit('proMessage', {
+                contest: String(contestId),
+                id: problem,
+                next: '5'
+            })
         }
     }
 }

@@ -3,9 +3,9 @@ let request = require('request')
 let cheerio = require('cheerio')
 
 module.exports = {
-    getProblem: function (contestId, problemId, callback) {
+    getSubmission: function (contestId, submission, callback) {
         let opts = {
-            url: basic.url + 'contest/' + contestId + '/problem/' + problemId,
+            url: basic.url + 'contest/' + contestId + '/submission/' + submission,
             method: 'GET',
             headers: {
                 'User-Agent': basic.userAgent
@@ -14,12 +14,12 @@ module.exports = {
 
         request(opts, (e, r, b) => {
             if (r.statusCode !== 200) {
-                callback(true, '题目序号越界')
+                callback(true, '提交编号越界')
                 return
             }
             try {
                 let $ = cheerio.load(b)
-                let problem = $('div[class=problemindexholder]').html().replace(/<a /g, '<a target="_blank" ')
+                let problem = $('pre[id="program-source-text"]').text()
                 callback(false, problem)
             } catch (e) {
                 console.log(e)

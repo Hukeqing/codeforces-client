@@ -18,7 +18,7 @@
         <el-form ref="form" label-width="80px"
                  style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); padding-top: 10px; padding-right: 20px; padding-bottom: 3px">
             <el-form-item label="题目标签">
-                <el-select v-model="label" multiple placeholder="请选择题目标签">
+                <el-select v-model="label" multiple placeholder="请选择题目标签" style="width: 100%" clearable>
                     <el-option
                         v-for="item in options"
                         :key="item.value"

@@ -61,7 +61,7 @@
         </div>
         <div>
         <span v-for="test in tests" :key="test.id" style="margin-left: 10px">
-            <el-button size="mini" v-on:click="copyTest(test.id)" round> 拷贝样例 {{ test.id + 1 }}</el-button>
+            <el-button size="mini" v-on:click="copyTest(test.value)" round> 拷贝样例 {{ test.id + 1 }}</el-button>
         </span>
         </div>
 
@@ -77,12 +77,10 @@ import '../static/css/problem-statement.css'
 import '../static/css/ttypography.css'
 
 let problem = require('../static/crawler/problem')
+let copy = require('../static/js/copy')
 
 export default {
     name: "Problem",
-
-    created() {
-    },
 
     data() {
         return {
@@ -201,14 +199,8 @@ export default {
                 this.tests.push({id: i / 2, value: test[i].match(/<pre>([\w\W]+?)<\/pre>/)[1]})
         },
 
-        copyTest(id) {
-            let tag = document.createElement('textarea');
-            tag.setAttribute('id', 'cp_hgz_input');
-            tag.value = this.tests[id].value;
-            document.getElementsByTagName('body')[0].appendChild(tag);
-            document.getElementById('cp_hgz_input').select();
-            document.execCommand('copy');
-            document.getElementById('cp_hgz_input').remove();
+        copyTest(value) {
+            copy.copy(value)
             this.$notify({
                 title: '成功',
                 message: '拷贝成功',

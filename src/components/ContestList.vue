@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import {timeCycle} from '@/static/time'
+import {timeCycle} from '@/static/js/time'
 
 export default {
     name: "ContestList",

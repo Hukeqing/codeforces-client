@@ -96,11 +96,32 @@
                 </el-table-column>
             </el-table>
         </template>
+
+        <el-dialog
+            :title="curSubmission"
+            :visible.sync="submissionDialog"
+            width="80%">
+            <el-button size="mini" v-on:click="copyCode" style="margin-bottom: 20px" :loading="onGetSubmission" round>拷 贝</el-button>
+            <el-input
+                type="textarea"
+                :rows="10"
+                v-model="code"
+                class="rt-input"
+                :disabled="true"
+                :autosize="{ minRows: 10 }">
+            </el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submissionDialog = false">关 闭</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-import {timeCycle} from '@/static/time'
+import {timeCycle} from '@/static/js/time'
+
+let copy = require('../static/js/copy')
+let submission = require('../static/crawler/submission')
 
 export default {
     name: "Status",
@@ -119,6 +140,10 @@ export default {
             from: 1,
             count: 1,
             submits: [],
+            curSubmission: '',
+            onGetSubmission: false,
+            submissionDialog: false,
+            code: ''
         }
     },
 
@@ -182,7 +207,19 @@ export default {
         },
 
         openSubmit(index) {
-            window.open('https://codeforces.com/contest/1399/submission/' + this.submits[index].id)
+            this.code = ''
+            this.submissionDialog = true
+            this.curSubmission = this.submits[index].id
+            this.onGetSubmission = true
+            submission.getSubmission(this.submits[index].contestId, this.submits[index].id, (e, r) => {
+                this.onGetSubmission = false
+                if (e) {
+                    console.log(r)
+                    this.$message.error('拉取出错')
+                    return
+                }
+                this.code = r
+            })
         },
 
         gotoProblem(index) {
@@ -192,6 +229,15 @@ export default {
                 id: curSubmit.problem.index,
                 next: '5'
             })
+        },
+
+        copyCode() {
+            copy.copy(this.code)
+            this.$notify({
+                title: '成功',
+                message: '拷贝成功',
+                type: 'success'
+            });
         }
     }
 }
