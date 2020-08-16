@@ -10,7 +10,7 @@
 
 使用 vue 进行编译，后对编译后的文件使用 Electron 打包
 
-[下载地址](https://github.com/Hukeqing/codeforces-client/releases/tag/v1.0.0)
+[下载地址](https://github.com/Hukeqing/codeforces-client/releases/tag/v1.1.0)
 
 ## 功能列表
  - [x] 登录(0.1.0)
@@ -21,14 +21,12 @@
  - [x] 查看比赛题目列表(0.2.0)
  - [x] 本地渲染题面(0.2.0)
  - [x] 缓存题面(0.3.0)
- - [ ] 查看某次提交记录
+ - [x] 查看某次提交记录(1.1.0)
  - [x] 缓存管理系统(0.4.0)
  - [ ] css 自定义页面
- - [x] 加快获取 XCsrfToken(0.4.0)
  - [x] 题面中的链接使用本地浏览器打开(0.5.0)
- - [x]  problemset 页面(1.0.0)
+ - [x] problemset 页面(1.0.0)
  - [ ] 多语言
- - [ ] 将项目转为 electron-vue 项目
 
 ## 本地编译使用方法
 **由于同源策略，如果使用 vue 编译后的文件将会无法正常运行**
