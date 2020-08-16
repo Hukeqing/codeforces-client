@@ -42,7 +42,7 @@
         </el-select>
 
         <el-button type="primary"
-                   style="margin-bottom: 15px; margin-left: 30px; width: 80px;"
+                   style="margin-bottom: 15px; margin-left: 30px; width: 120px;"
                    round
                    v-on:click="submitCode"
                    :loading="onSubmit">
@@ -151,6 +151,7 @@ export default {
                 this.$message.error('当前未登录')
                 return
             }
+            this.onSubmit = true
             this.$message({
                 type: 'info',
                 message: '你的代码正在提交中，你可以继续进行其他操作'
@@ -163,6 +164,7 @@ export default {
             // })
             common.getXCsrfToken((e, x) => {
                 submit.submitCode(x, this.myCid, this.myPid, this.code, this.languageSelect, e => {
+                    this.onSubmit = false
                     if (e) {
                         this.$message.error('提交肯定出错了')
                     } else {
