@@ -1,5 +1,6 @@
 let basic = require('./basic')
 let request = require('request')
+// let cheerio = require('cheerio')
 
 module.exports = {
     submitCode: function (xCsrfToken, contest, problem, code, lang, callback) {
@@ -28,6 +29,11 @@ module.exports = {
         try {
             // eslint-disable-next-line no-unused-vars
             request(opts, (e, r, b) => {
+                // let $ = cheerio.load(b)
+                // update xCsrfToken
+                // basic.xCsrfToken = $('meta[name="X-Csrf-Token"]').prop('content')
+                // console.log(basic.xCsrfToken)
+
                 if (e !== null) callback(true)
                 callback(false)
             })

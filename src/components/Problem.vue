@@ -51,13 +51,13 @@
                        v-on:click="saveProblem">
                 {{ useLocalStorage ? '删除缓存' : '缓存此题' }}
             </el-button>
-<!--            <el-button type="warning"-->
-<!--                       style="margin-bottom: 15px; margin-left: 15px; width: 100px;"-->
-<!--                       round-->
-<!--                       :disabled="problemData === '' || !useLocalStorage || loading"-->
-<!--                       v-on:click="reloadProblem">-->
-<!--                重新拉取-->
-<!--            </el-button>-->
+            <!--            <el-button type="warning"-->
+            <!--                       style="margin-bottom: 15px; margin-left: 15px; width: 100px;"-->
+            <!--                       round-->
+            <!--                       :disabled="problemData === '' || !useLocalStorage || loading"-->
+            <!--                       v-on:click="reloadProblem">-->
+            <!--                重新拉取-->
+            <!--            </el-button>-->
         </div>
         <div>
         <span v-for="test in tests" :key="test.id" style="margin-left: 10px">
@@ -197,7 +197,7 @@ export default {
             this.tests = []
             let test = this.problemData.match(/<pre>[\w\W]+?<\/pre>/g)
             for (let i = 0; i < test.length; i += 2)
-                this.tests.push({id: i / 2, value: test[i].match(/<pre>([\w\W]+?)<\/pre>/)[1]})
+                this.tests.push({id: i / 2, value: test[i].match(/<pre>([\w\W]+?)<\/pre>/)[1].replace(/<br>/g, '\n')})
         },
 
         copyTest(value) {

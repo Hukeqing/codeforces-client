@@ -4,8 +4,12 @@ let cheerio = require('cheerio')
 
 module.exports = {
     getXCsrfToken: function (callback) {
+        if (basic.xCsrfToken !== '') {
+            callback(false, basic.xCsrfToken)
+            return
+        }
         let opts = {
-            url: 'https://codeforces.com/problemset/submit',
+            url: basic.url + 'enter',
             method: 'GET',
             headers: {
                 'User-Agent': basic.userAgent
@@ -15,10 +19,11 @@ module.exports = {
             request(opts, (e, r, b) => {
                 try {
                     const $ = cheerio.load(b)
-                    callback(false, $('meta[name="X-Csrf-Token"]').prop('content'))
+                    let xCsrfToken = $('meta[name="X-Csrf-Token"]').prop('content');
+                    callback(false, xCsrfToken)
+                    console.log(xCsrfToken)
                 } catch (e) {
                     console.log('connection error')
-                    callback(true, 0)
                 }
             })
         } catch (e) {
@@ -51,6 +56,10 @@ module.exports = {
             request(opts, (e, r, b) => {
                 try {
                     const $ = cheerio.load(b)
+                    // update xCsrfToken
+                    basic.xCsrfToken = $('meta[name="X-Csrf-Token"]').prop('content')
+                    console.log(basic.xCsrfToken)
+
                     const userCheerio = cheerio.load($('div[class="lang-chooser"]').html())
                     let smallCheerio = cheerio.load(userCheerio(userCheerio('div')[1]).html())
                     let user = smallCheerio('a')

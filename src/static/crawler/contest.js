@@ -15,6 +15,10 @@ module.exports = {
         request(opts, (e, r, b) => {
             try {
                 let $ = cheerio.load(b)
+                // update xCsrfToken
+                // basic.xCsrfToken = $('meta[name="X-Csrf-Token"]').prop('content')
+                // console.log(basic.xCsrfToken)
+
                 let problems = $('table[class=problems]').html().replace(/[\r\n]/g, '')
                 let problemList = problems.split('<tr').slice(2).map(str => '<tr' + str + '</tr>')
                 let res = []

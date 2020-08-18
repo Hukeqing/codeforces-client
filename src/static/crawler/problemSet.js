@@ -14,6 +14,9 @@ module.exports = {
         request(opts, (e, r, b) => {
             try {
                 let $ = cheerio.load(b)
+                // update xCsrfToken
+                // basic.xCsrfToken = $('meta[name="X-Csrf-Token"]').prop('content')
+                // console.log(basic.xCsrfToken)
 
                 // max page
                 let page = $('div[class="pagination"]').html()

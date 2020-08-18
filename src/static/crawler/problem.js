@@ -19,6 +19,10 @@ module.exports = {
             }
             try {
                 let $ = cheerio.load(b)
+                // update xCsrfToken
+                // basic.xCsrfToken = $('meta[name="X-Csrf-Token"]').prop('content')
+                // console.log(basic.xCsrfToken)
+
                 let problem = $('div[class=problemindexholder]').html().replace(/<a /g, '<a target="_blank" ')
                 callback(false, problem)
             } catch (e) {
