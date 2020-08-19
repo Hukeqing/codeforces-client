@@ -87,6 +87,7 @@ export default {
 
     props: {
         contestId: String,
+        problemId: String,
         wat: Boolean,
     },
 
@@ -112,7 +113,7 @@ export default {
                 } else {
                     this.problems = p
                     this.notFetch = false
-                    this.$emit('proMessage', {contest: this.myCid, id: '', next: '4-2'})
+                    this.$emit('proMessage', {contest: this.myCid, id: this.problemId, next: '4-2'})
                 }
                 this.loading = false
             })

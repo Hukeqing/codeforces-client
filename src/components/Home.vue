@@ -70,7 +70,7 @@
                     :wat="watchAttr['2']" v-on:proMessage="proMessage"></Submit>
             <Status v-if="status==='3'" :user="user" v-on:proMessage="proMessage"></Status>
             <ContestList v-show="status==='4-1'" v-on:proMessage="proMessage"></ContestList>
-            <Contest v-show="status==='4-2'" :contestId="contestId" v-on:proMessage="proMessage"
+            <Contest v-show="status==='4-2'" :contestId="contestId" :problemId="problemId" v-on:proMessage="proMessage"
                      :wat="watchAttr['4-2']"></Contest>
             <ProblemSet v-show="status==='4-3'" v-on:proMessage="proMessage"></ProblemSet>
             <Problem v-show="status==='5'" :contestId="contestId" :problemId="problemId" :wat="watchAttr['5']"

@@ -88,6 +88,8 @@ export default {
             problemData: '',
             myCid: '',
             myPid: '',
+            curCid: '',
+            curPid: '',
             useLocalStorage: false,
             dialogVisible: false,
             curLink: '',
@@ -104,7 +106,7 @@ export default {
     watch: {
         wat: function (value) {
             if (value === true) {
-                if (this.myCid === this.contestId && this.myPid === this.problemId) return
+                if (this.curCid === this.contestId && this.curPid === this.problemId) return
                 this.myCid = this.contestId
                 this.myPid = this.problemId
                 if (this.myCid === '' || this.myPid === '')
@@ -132,35 +134,35 @@ export default {
                 this.loadProblem()
             }
             this.$emit('proMessage', {contest: this.myCid, id: this.myPid, next: '5'})
+            this.curCid = this.myCid
+            this.curPid = this.myPid
         },
 
         saveProblem() {
-            console.log(this.contestId + this.problemId)
-            console.log(this.myCid + this.myPid)
             if (!this.useLocalStorage) {
-                if (window.localStorage.getItem(this.contestId + this.problemId) == null) {
+                if (window.localStorage.getItem(this.curCid + this.curPid) == null) {
                     let saved = window.localStorage.savedProblem
-                    if (saved == null) saved = this.contestId + this.problemId + ';'
-                    else saved += this.contestId + this.problemId + ';'
+                    if (saved == null) saved = this.curCid + this.curPid + ';'
+                    else saved += this.curCid + this.curPid + ';'
                     window.localStorage.savedProblem = saved
                 }
-                window.localStorage.setItem(this.contestId + this.problemId, this.problemData)
+                window.localStorage.setItem(this.curCid + this.curPid, this.problemData)
                 this.useLocalStorage = true
             } else {
-                window.localStorage.removeItem(this.contestId + this.problemId)
-                window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.contestId + this.problemId + ';', '')
+                window.localStorage.removeItem(this.curCid + this.curPid)
+                window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.curCid + this.curPid + ';', '')
                 this.useLocalStorage = false
             }
         },
 
-        reloadProblem() {
-            window.localStorage.removeItem(this.contestId + this.problemId)
-            window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.contestId + this.problemId + ';', '')
-            this.myCid = this.contestId
-            this.myPid = this.problemId
-            this.loadProblem()
-            this.useLocalStorage = false
-        },
+        // reloadProblem() {
+        //     window.localStorage.removeItem(this.curCid + this.curPid)
+        //     window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.curCid + this.curPid + ';', '')
+        //     this.myCid = this.curCid
+        //     this.myPid = this.curPid
+        //     this.loadProblem()
+        //     this.useLocalStorage = false
+        // },
 
         loadProblem() {
             this.loading = true
@@ -190,7 +192,7 @@ export default {
                 this.$message.error('请输入题目的两个编号')
                 return
             }
-            this.$emit('proMessage', {contest: this.contestId, id: this.problemId, next: '2'})
+            this.$emit('proMessage', {contest: this.curCid, id: this.curPid, next: '2'})
         },
 
         loadProblemTest() {
