@@ -21,7 +21,6 @@ module.exports = {
                     const $ = cheerio.load(b)
                     let xCsrfToken = $('meta[name="X-Csrf-Token"]').prop('content');
                     callback(false, xCsrfToken)
-                    console.log(xCsrfToken)
                 } catch (e) {
                     console.log('connection error')
                 }

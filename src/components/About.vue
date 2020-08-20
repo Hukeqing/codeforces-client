@@ -52,7 +52,7 @@ export default {
         }
     },
 
-    created() {
+    mounted() {
         fetch('https://api.github.com/repos/Hukeqing/codeforces-client/releases/latest').then(response => response.json()).then(json => {
             this.latestVersion = json.tag_name
             this.updateLink = json.html_url

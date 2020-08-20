@@ -3,7 +3,7 @@
     font-weight: bold;
 }
 
-.verdict-accepted-challenged {
+.el-table .verdict-accepted-challenged {
     background-color: #c8ffc8;
 }
 
@@ -11,24 +11,24 @@
     background-color: #ffc8c8;
 }
 
-.verdict-rejected {
-    color: #00a;
+.el-table .verdict-rejected {
+    color: #ffc8c8;
 }
 
-.verdict-waiting {
+.el-table .verdict-waiting {
     color: #c8c8c8;
 }
 
-.verdict-successful-challenge {
+.el-table .verdict-successful-challenge {
     font-weight: bold;
     background-color: #c8ffc8;
 }
 
-.verdict-unsuccessful-challenge {
+.el-table .verdict-unsuccessful-challenge {
     color: #00a;
 }
 
-.verdict-challenged {
+.el-table .verdict-challenged {
     background-color: #ffc8c8;
     font-weight: bold;
 }

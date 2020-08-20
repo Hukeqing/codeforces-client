@@ -107,11 +107,40 @@
             <el-input
                 type="textarea"
                 :rows="10"
-                v-model="code"
+                v-model="detail.source"
                 class="rt-input"
-                :disabled="true"
+                readonly
                 :autosize="{ minRows: 10 }">
             </el-input>
+            <div v-for="data in detail.data" v-bind:key="data.id"
+                 style="box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04); border-radius: 4px; padding: 10px 10px 10px 10px">
+                <h1>{{ data.id }}</h1>
+                <p>
+                    Time: {{ data.timeConsumed }}ms &emsp;
+                    memory: {{ data.memoryConsumed }}KB &emsp;
+                    exitCode: {{ data.exitCode }}
+                    <br>
+                    Verdict: {{ data.verdict }}
+                </p>
+                <el-form label-position="left">
+                    <el-form-item label="Input">
+                        <el-input type="textarea" :autosize="{ minRows: 0 }" readonly
+                                  v-model="data.input"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Output">
+                        <el-input type="textarea" :autosize="{ minRows: 0 }" readonly
+                                  v-model="data.output"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Answer">
+                        <el-input type="textarea" :autosize="{ minRows: 0 }" readonly
+                                  v-model="data.answer"></el-input>
+                    </el-form-item>
+                    <el-form-item label="comment">
+                        <el-input type="textarea" :autosize="{ minRows: 0 }" readonly
+                                  v-model="data.checkerStdoutAndStderr"></el-input>
+                    </el-form-item>
+                </el-form>
+            </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="submissionDialog = false">关 闭</el-button>
             </span>
@@ -123,6 +152,7 @@
 import {timeCycle} from '@/static/js/time'
 
 let copy = require('../static/js/copy')
+let common = require('../static/crawler/common')
 let submission = require('../static/crawler/submission')
 
 export default {
@@ -142,7 +172,7 @@ export default {
             curSubmission: '',
             onGetSubmission: false,
             submissionDialog: false,
-            code: '',
+            detail: {},
             timeOut: null
         }
     },
@@ -211,18 +241,54 @@ export default {
         },
 
         openSubmit(index) {
-            this.code = ''
             this.submissionDialog = true
             this.curSubmission = this.submits[index].id
             this.onGetSubmission = true
-            submission.getSubmission(this.submits[index].contestId, this.submits[index].id, (e, r) => {
-                this.onGetSubmission = false
-                if (e) {
-                    console.log(r)
-                    this.$message.error('拉取出错')
-                    return
-                }
-                this.code = r
+            // submission.getSubmission(this.submits[index].contestId, this.submits[index].id, (e, r) => {
+            //     this.onGetSubmission = false
+            //     if (e) {
+            //         console.log(r)
+            //         this.$message.error('拉取出错')
+            //         return
+            //     }
+            //     this.code = r
+            // })
+            this.detail = {}
+            common.getXCsrfToken((e, x) => {
+                submission.getSubmissionDetail(x, this.submits[index].id, (e, r) => {
+                    this.onGetSubmission = false
+                    if (e) {
+                        console.log(r)
+                        this.$message.error(r)
+                        return
+                    }
+                    r = JSON.parse(r)
+                    this.detail = {
+                        source: r.source,
+                        contestName: r.contestName,
+                        problemName: r.problemName,
+                        partyName: r.partyName,
+                        verdict: r.verdict,
+                        nextId: r.nextId,
+                        prevId: r.prevId,
+                        data: []
+                    }
+                    console.log(this.detail)
+                    for (let i = r['testCount']; i >= 1; --i) {
+                        this.detail.data.push({
+                            id: i,
+                            timeConsumed: r['timeConsumed#' + i],
+                            memoryConsumed: parseInt(r['memoryConsumed#' + i]) / 1024,
+                            exitCode: r['exitCode#' + i],
+                            verdict: r['verdict#' + i],
+                            input: r['input#' + i],
+                            output: r['output#' + i],
+                            answer: r['answer#' + i],
+                            checkerStdoutAndStderr: r['checkerStdoutAndStderr#' + i]
+                        })
+                    }
+                    console.log(this.detail)
+                })
             })
         },
 
@@ -236,7 +302,7 @@ export default {
         },
 
         copyCode() {
-            copy.copy(this.code)
+            copy.copy(this.detail.source)
             this.$notify({
                 title: '成功',
                 message: '拷贝成功',
