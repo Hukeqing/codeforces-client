@@ -57,7 +57,7 @@ module.exports = {
                     const $ = cheerio.load(b)
                     // update xCsrfToken
                     basic.xCsrfToken = $('meta[name="X-Csrf-Token"]').prop('content')
-                    console.log(basic.xCsrfToken)
+                    // console.log(basic.xCsrfToken)
 
                     const userCheerio = cheerio.load($('div[class="lang-chooser"]').html())
                     let smallCheerio = cheerio.load(userCheerio(userCheerio('div')[1]).html())

@@ -105,7 +105,7 @@ export default {
                 total += this.problems[i].memory
             if (this.account)
                 total += (window.localStorage.email.length + window.localStorage.password.length) / 1024
-            if (window.localStorage.getItem('email') != null)
+            if (window.localStorage.savedProblem != null)
                 total += window.localStorage.savedProblem.length / 1024
             if (window.localStorage.getItem('setting') != null)
                 total += window.localStorage.setting.length / 1024

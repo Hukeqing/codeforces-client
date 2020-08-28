@@ -46,7 +46,7 @@ export default {
 
     data() {
         return {
-            version: 'v1.2.0',
+            version: 'v1.2.1',
             latestVersion: '',
             updateLink: '',
         }
