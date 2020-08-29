@@ -152,7 +152,7 @@ export default {
         getLengthTime(time) {
             let hour = Math.floor(time / 3600)
             let mint = Math.floor(time % 3600) / 60
-            return hour + ':' + (mint > 10 ? mint : '0' + mint)
+            return hour + ':' + (mint >= 10 ? mint : '0' + mint)
         },
 
         // eslint-disable-next-line no-unused-vars
