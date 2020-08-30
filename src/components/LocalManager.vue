@@ -71,6 +71,11 @@ export default {
         }
     },
 
+    props: {
+        contestId: String,
+        problemId: String,
+    },
+
     created() {
         this.loading = true
 
@@ -119,6 +124,8 @@ export default {
             window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.problems[index].id + ';', '')
             this.useLocalStorage = false
             this.problems.splice(index, 1)
+            if (this.problems[index].id === this.contestId + this.problemId)
+                this.$emit('reloadProblem')
         },
 
         removeUser() {

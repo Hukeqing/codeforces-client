@@ -75,7 +75,8 @@
             <ProblemSet v-show="status==='4-3'" v-on:proMessage="proMessage"></ProblemSet>
             <Problem v-show="status==='5'" :contestId="contestId" :problemId="problemId" :wat="watchAttr['5']"
                      v-on:proMessage="proMessage"></Problem>
-            <LocalManager v-if="status==='6'" v-on:proMessage="proMessage"></LocalManager>
+            <LocalManager v-if="status==='6'" :contestId="contestId" :problemId="problemId" v-on:proMessage="proMessage"
+                          v-on:reloadProblem="reloadProblem"></LocalManager>
             <About v-show="status==='7'"></About>
         </el-main>
     </el-container>
@@ -155,6 +156,10 @@ export default {
                 this.watchAttr[problem.next] = true
             }
         },
+
+        reloadProblem() {
+            this.watchAttr['5'] = true
+        }
     }
 }
 </script>
