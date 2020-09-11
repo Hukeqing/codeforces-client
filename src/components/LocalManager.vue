@@ -23,7 +23,7 @@
                     min-width="100">
                     <template scope="scope">
                         <el-link type="primary" v-on:click="clickProblem(scope.$index)">
-                            {{ problems[scope.$index].id }}
+                            {{ scope.row.id }}
                         </el-link>
                     </template>
                 </el-table-column>
@@ -38,8 +38,7 @@
                     align="center"
                     min-width="50">
                     <template scope="scope">
-                        <el-button type="primary"
-                                   v-on:click="remove(scope.$index)">
+                        <el-button type="primary" v-on:click="remove(scope.$index)">
                             删除缓存
                         </el-button>
                     </template>
@@ -69,11 +68,6 @@ export default {
                 fontsize: 14
             }
         }
-    },
-
-    props: {
-        contestId: String,
-        problemId: String,
     },
 
     created() {
@@ -122,10 +116,7 @@ export default {
         remove(index) {
             window.localStorage.removeItem(this.problems[index].id)
             window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.problems[index].id + ';', '')
-            this.useLocalStorage = false
             this.problems.splice(index, 1)
-            if (this.problems[index].id === this.contestId + this.problemId)
-                this.$emit('reloadProblem')
         },
 
         removeUser() {

@@ -149,8 +149,10 @@ export default {
                 window.localStorage.setItem(this.curCid + this.curPid, this.problemData)
                 this.useLocalStorage = true
             } else {
-                window.localStorage.removeItem(this.curCid + this.curPid)
-                window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.curCid + this.curPid + ';', '')
+                if (window.localStorage.getItem(this.curCid + this.curPid) != null) {
+                    window.localStorage.removeItem(this.curCid + this.curPid)
+                    window.localStorage.savedProblem = window.localStorage.savedProblem.replace(this.curCid + this.curPid + ';', '')
+                }
                 this.useLocalStorage = false
             }
         },
