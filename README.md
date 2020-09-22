@@ -8,7 +8,7 @@
 
 **注意：本系统仅减少拉取数据量，并非加速拉取**
 
-[下载地址](https://github.com/Hukeqing/codeforces-client/releases/tag/v1.2.2)
+[下载地址](https://github.com/Hukeqing/codeforces-client/releases/tag/v1.2.3)
 
 ## 功能列表（括号内为实现此功能的版本号）
  - [x] 登录(>=0.1.0)
