@@ -35,7 +35,10 @@ module.exports = {
                     let tmp = $('a').map((i, el) => $(el).text().replace(/(^\s*)|(\s*$)/g, ""))
                     pro['id'] = tmp['0']
                     pro['name'] = tmp['1']
-                    pro['passed'] = tmp['3'].slice(1)
+                    if (tmp['4'] !== undefined)
+                        pro['passed'] = tmp['4'].slice(1)
+                    else
+                        pro['passed'] = tmp['3'].slice(1)
                     res.push(pro)
                 }
                 callback(false, res)
